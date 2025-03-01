@@ -15,8 +15,7 @@ const UserForm = () => {
 
   const formMethods = useForm<UserInputType>({
     resolver: zodResolver(FormUserCreationSchema),
-    defaultValues: {
-    },
+    defaultValues: {},
   });
 
   const {

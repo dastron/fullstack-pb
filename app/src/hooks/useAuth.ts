@@ -68,7 +68,7 @@ const useAuth = () => {
   const hasPermission = useCallback(
     (_permission: string): boolean => {
       if (!user) return false;
-     return true
+      return true;
     },
     [user]
   );

@@ -1,9 +1,6 @@
 import PocketBase from "pocketbase";
 import type { RecordService } from "pocketbase";
-import type {
-  ProjectType,
-  UserType,
-} from "./types";
+import type { ProjectType, UserType } from "./types";
 
 export interface TypedPocketBase extends PocketBase {
   collection(idOrName: "Users"): RecordService<UserType>;

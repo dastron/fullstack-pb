@@ -3,9 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import Field from "@/components/FormField";
 import { ProjectInputSchema } from "@/schema";
-import {  StatusEnum } from "@/enums";
+import { StatusEnum } from "@/enums";
 import { useNavigate } from "react-router-dom";
-import type { ProjectInputType,  ProjectType } from "@/types";
+import type { ProjectInputType, ProjectType } from "@/types";
 import useAuth from "@/hooks/useAuth";
 import ImageUploadInput from "@/components/forms/ImageUploadSingle";
 import { createProject } from "./project";
@@ -38,7 +38,6 @@ const ProjectForm = ({ redirect = true, onSuccess }: ProjectCreationFormProps) =
     setValue,
     formState: { errors },
   } = formMethods;
-
 
   const handleImageUpload = (file?: File) => {
     if (file) {

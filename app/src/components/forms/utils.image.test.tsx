@@ -27,7 +27,7 @@ export const imageUpload = {
     fireEvent.change(fileInput, { target: { files: dataTransfer.files } });
 
     // Wait for the component to render at least one preview image
-   await vi.waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByTestId("image-preview-0")).toBeTruthy();
     });
   },

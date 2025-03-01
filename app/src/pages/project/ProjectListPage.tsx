@@ -22,8 +22,6 @@ const ProjectListPage = () => {
   const { requestId } = useParams();
   const title = requestId ? "Request Projects" : "Projects";
 
-
-
   return (
     <Stack spacing={4}>
       <Heading>{title}</Heading>

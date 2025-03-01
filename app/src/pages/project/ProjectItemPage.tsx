@@ -4,7 +4,6 @@ import type { ProjectType } from "@/types";
 import { Heading, Stack } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 
-
 type URLParams = {
   params: {
     projectId?: string;

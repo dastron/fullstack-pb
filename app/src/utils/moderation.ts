@@ -39,7 +39,7 @@ export const moderateObject = async (userId: string | undefined, target: string,
       ...moderationResults,
     };
     // await pb.collection("UserViolations").create(userCollectionData);
-    console.error(userCollectionData)
+    console.error(userCollectionData);
   }
 
   return moderationResults;

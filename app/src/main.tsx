@@ -26,11 +26,7 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     hydrateFallbackElement: <SpinnerPage />,
-    children: [
-      AppRoutes,
-      ProjectRoutes,
-      SettingsRoutes,
-    ],
+    children: [AppRoutes, ProjectRoutes, SettingsRoutes],
   },
 ]);
 

@@ -1,7 +1,5 @@
 import { z } from "zod";
-import {
-  StatusEnum,
-} from "./enums";
+import { StatusEnum } from "./enums";
 
 const baseSchema = {
   id: z.string().describe("unique id"),
@@ -34,7 +32,7 @@ export const ProjectInputSchema = z
     content: z.string().min(3, "Missing text from content"),
     status: StatusEnum,
     summary: z.string().optional(),
-    // 
+    //
     User: z.string().nonempty("User ID is missing"),
     SubscriberUsers: z.array(z.string()),
   })

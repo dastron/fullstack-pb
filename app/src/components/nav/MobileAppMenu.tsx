@@ -37,7 +37,7 @@ const MobileAppMenu = () => {
             <MenuGroup title="Projects">
               <MenuItem onClick={() => navigate("/project")}>
                 <Icon as={HiOutlineBriefcase} mr={2} />
-                Explore Projects
+                Projects
               </MenuItem>
             </MenuGroup>
             <MenuGroup title="Account">

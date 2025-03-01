@@ -41,7 +41,7 @@ export function Provider(props: { children: React.ReactNode }) {
   return (
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-     {props.children}
+      {props.children}
     </ChakraProvider>
   );
 }

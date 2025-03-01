@@ -31,7 +31,6 @@ const UserProfileCard = ({ user }: UserProfileCardProps) => {
               <Text fontSize="sm" color="secondary"></Text>
             </Box>
           </Stack>
-        
         </Flex>
       </CardHeader>
 

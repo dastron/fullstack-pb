@@ -30,9 +30,7 @@ export const SignUpFormPage = () => {
               </Box>
 
               {/* Key Benefits */}
-              {[
-                "Secure and reliable platform",
-              ].map((benefit, index) => (
+              {["Secure and reliable platform"].map((benefit, index) => (
                 <Box key={index} p={3} bg={benefitBg} borderRadius="md">
                   <Text color={textColor}>✓ {benefit}</Text>
                 </Box>
