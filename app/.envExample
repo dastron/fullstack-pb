@@ -1,0 +1,3 @@
+VITE_FUNCTIONS_URL = 'http://localhost:8091' # /functions
+VITE_API_URL = 'http://localhost:8090' # /api
+VITE_MAPBOX_TOKEN = 'pk.eyJ1IjoidGVjaGllOWsiLCJhIjoiY201ZXBxd3kzNXNsejJrb29sYzd4czZrMyJ9.26ksGNf7ltr6AKOSQ3Wlgw'

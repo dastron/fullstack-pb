@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",             // Use ESNext modules
+    "moduleResolution": "NodeNext", // Use Node's ESM resolution algorithm
+    "target": "ES2020",             // Or higher, as needed
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "esModuleInterop": true,        // For compatibility
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["src/**/*.ts", "src/pb.ts", "src/index.ts"]
+}
