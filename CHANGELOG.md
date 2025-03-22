@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/dastron/fullstack-pb/compare/v1.0.0...v1.0.1) (2025-03-22)
+
+
+### Bug Fixes
+
+* remove json ([df0d8e6](https://github.com/dastron/fullstack-pb/commit/df0d8e635fe96e17751afa1ab339bf4f3d8d7c92))
+
 ## 1.0.0 (2025-03-22)
 
 
