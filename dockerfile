@@ -15,7 +15,7 @@
     COPY types/ types/  
     
     # Install dependencies for the parent monorepo
-    RUN yarn install --frozen-lockfile
+    RUN yarn install
     
     # ---------------------------------------------------------
     # Stage 2: Build the React app

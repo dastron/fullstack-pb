@@ -11,7 +11,7 @@
   "scripts": {
     "setup": "yarn run setup:script && yarn run setup:install",
     "setup:script": "chmod +x ./dev-setup.sh && ./dev-setup.sh",
-    "setup:install": "yarn run setup && cd types && yarn install && cd ../app && yarn install && cd ../functions && yarn install",
+    "setup:install": "cd types && yarn install && cd ../app && yarn install && cd ../functions && yarn install",
     "build": "cd types && yarn build && cd ../app && yarn build && cd ../functions && yarn build",
     "pb": "./pocket_base/pocketbase serve --http=\"0.0.0.0:8090\" --hooksDir ./pb/pb_hooks",
     "pb:snapshot": "./pocket_base/pocketbase migrate collections",
