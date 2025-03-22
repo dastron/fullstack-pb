@@ -4,6 +4,10 @@ FROM node:20 AS react-build
 # Set working directory
 WORKDIR /app
 
+# Add version as build arg
+ARG VERSION
+ENV VITE_APP_VERSION=$VERSION
+
 # Install dependencies first for better caching
 COPY app/package.json app/yarn.lock ./
 RUN yarn install --frozen-lockfile
@@ -17,6 +21,10 @@ FROM node:20 AS functions-build
 
 WORKDIR /functions
 
+# Add version as build arg
+ARG VERSION
+ENV APP_VERSION=$VERSION
+
 # Install dependencies first
 COPY functions/package.json functions/yarn.lock ./
 RUN yarn install --frozen-lockfile
@@ -28,13 +36,18 @@ RUN yarn build
 # Stage 3: Prepare PocketBase
 FROM alpine:latest AS pocketbase
 
+# Use VERSION build arg for PocketBase version if provided, otherwise use default
+ARG VERSION
 ARG PB_VERSION=0.25.5
 ARG TARGETARCH
+
+# Use VERSION for PB_VERSION if provided
+ENV ACTUAL_PB_VERSION=${PB_VERSION}
 
 RUN apk add --no-cache unzip ca-certificates wget
 
 # Download the appropriate architecture version
-RUN wget -q https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_${TARGETARCH}.zip -O /tmp/pb.zip && \
+RUN wget -q https://github.com/pocketbase/pocketbase/releases/download/v${ACTUAL_PB_VERSION}/pocketbase_${ACTUAL_PB_VERSION}_linux_${TARGETARCH}.zip -O /tmp/pb.zip && \
     unzip /tmp/pb.zip -d /pb/ && \
     rm /tmp/pb.zip
 
@@ -42,8 +55,13 @@ RUN wget -q https://github.com/pocketbase/pocketbase/releases/download/v${PB_VER
 COPY ./pb/pb_migrations /pb/pb_migrations
 COPY ./pb/pb_data /pb/pb_data
 COPY ./pb/pb_hooks /pb/pb_hooks
+
 # Stage 4: Final image
 FROM nginx:alpine
+
+# Add version label
+ARG VERSION
+LABEL version=$VERSION
 
 # Install runtime dependencies
 RUN apk add --no-cache --update \

@@ -57,6 +57,7 @@ jobs:
           NIGHTLY_DATE=$(date +'%Y%m%d')
           NIGHTLY_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           echo "TAGS=dastro/dastro-fullstack:nightly-${NIGHTLY_DATE},dastro/dastro-fullstack:nightly-${NIGHTLY_DATE}-${NIGHTLY_SHA},dastro/dastro-fullstack:nightly" >> $GITHUB_ENV
+          echo "VERSION=nightly-${NIGHTLY_DATE}" >> $GITHUB_ENV
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
@@ -64,4 +65,6 @@ jobs:
           push: true
           cache-from: type=gha,scope=fullstack-nightly-cache
           cache-to: type=gha,mode=max,scope=fullstack-nightly-cache
-          tags: ${{ env.TAGS }} 
+          tags: ${{ env.TAGS }}
+          build-args: |
+            VERSION=${{ env.VERSION }} 

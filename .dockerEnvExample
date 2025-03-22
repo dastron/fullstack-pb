@@ -4,3 +4,4 @@ FUNCTIONS_PORT=8081
 API_URL=/
 OPENAI_API_KEY=sk
 PB_VERSION=0.25.5
+# VERSION is auto-set by the Release Please workflow

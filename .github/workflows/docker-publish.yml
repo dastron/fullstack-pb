@@ -66,9 +66,11 @@ jobs:
           if [ "$CUSTOM_TAG" != "manual" ]; then
             # User provided a custom tag
             echo "TAGS=dastro/dastro-fullstack:${CUSTOM_TAG}" >> $GITHUB_ENV
+            echo "VERSION=${CUSTOM_TAG}" >> $GITHUB_ENV
           else
             # Default manual tag with timestamp
             echo "TAGS=dastro/dastro-fullstack:manual-${TIMESTAMP}-${SHORT_SHA}" >> $GITHUB_ENV
+            echo "VERSION=manual-${TIMESTAMP}" >> $GITHUB_ENV
           fi
 
       - name: Build and Push Docker Image
@@ -78,3 +80,5 @@ jobs:
           cache-from: type=gha,scope=fullstack-manual-cache
           cache-to: type=gha,mode=max,scope=fullstack-manual-cache
           tags: ${{ env.TAGS }}
+          build-args: |
+            VERSION=${{ env.VERSION }}
