@@ -112,6 +112,7 @@ This project uses [Release Please](https://github.com/googleapis/release-please)
    - Creates a new GitHub release with a generated changelog
    - Tags the release with the new version
    - Triggers the release Docker build workflow
+   - Try
 
 ### Docker Images
 
