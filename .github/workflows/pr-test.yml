@@ -17,16 +17,16 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
-
-      - name: Build Types Package
-        run: |
-          cd types
-          yarn build
           
       - name: Install Dependencies
         run: |
           yarn install --frozen-lockfile
           
+      - name: Build Types Package
+        run: |
+          cd types
+          yarn build
+
       - name: Run Tests
         run: |
           cd app
