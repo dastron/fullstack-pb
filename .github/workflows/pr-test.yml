@@ -26,7 +26,11 @@ jobs:
         run: |
           cd types
           yarn build
-
+          
+      - name: Setup Yarn Workspace Links
+        run: |
+          yarn install --force
+          
       - name: Run Tests
         run: |
           cd app
