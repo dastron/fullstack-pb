@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/dastron/fullstack-pb/compare/v1.0.1...v1.0.2) (2025-03-22)
+
+
+### Bug Fixes
+
+* loop ([ce31965](https://github.com/dastron/fullstack-pb/commit/ce31965a50b9b71bbb5b7960180253c0c0de2457))
+* update dockerfile ([229b9bd](https://github.com/dastron/fullstack-pb/commit/229b9bd7a48ef2a28f5e0e07e055283490834ec0))
+
 ## [1.0.1](https://github.com/dastron/fullstack-pb/compare/v1.0.0...v1.0.1) (2025-03-22)
 
 
