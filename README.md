@@ -92,3 +92,33 @@ yarn dev
 ```
 
 This will concurrently run the React frontend, Express backend, and PocketBase server.
+
+## Release Process
+
+This project uses [Release Please](https://github.com/googleapis/release-please) to automate versioning and changelog generation.
+
+### How it Works
+
+1. Commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/) format:
+   - `feat: add new feature` - Minor version bump
+   - `fix: resolve bug` - Patch version bump
+   - `docs: update README` - No version bump
+   - `chore: update dependencies` - No version bump
+   - `BREAKING CHANGE: redesign API` - Major version bump
+
+2. When commits are pushed to the main branch, Release Please automatically creates or updates a release PR.
+
+3. When the release PR is merged, Release Please:
+   - Creates a new GitHub release with a generated changelog
+   - Tags the release with the new version
+   - Triggers the release Docker build workflow
+
+### Docker Images
+
+The following Docker image tags are available:
+
+- `dastro/dastro-fullstack:latest` - Latest stable release
+- `dastro/dastro-fullstack:x.y.z` - Specific version (e.g., 1.0.0)
+- `dastro/dastro-fullstack:nightly` - Latest nightly build
+- `dastro/dastro-fullstack:nightly-YYYYMMDD` - Specific nightly build date
+- `dastro/dastro-fullstack:manual-*` - Manual builds from the workflow_dispatch trigger

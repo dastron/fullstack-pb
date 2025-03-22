@@ -20,8 +20,16 @@ jobs:
           
       - name: Install Dependencies
         run: |
-          cd app
           yarn install --frozen-lockfile
+          
+      - name: Build Types Package
+        run: |
+          cd types
+          yarn build
+          
+      - name: Setup Yarn Workspace Links
+        run: |
+          yarn install --force
           
       - name: Run Tests
         run: |

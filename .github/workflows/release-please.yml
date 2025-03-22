@@ -1,0 +1,89 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          package-name: fullstack-pb-template
+          bump-minor-pre-major: true
+          bump-patch-for-minor-pre-major: true
+          include-v-in-tag: true
+          changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false},{"type":"docs","section":"Documentation","hidden":false},{"type":"refactor","section":"Code Refactoring","hidden":false}]'
+          
+  # This job runs only if a release was created by release-please
+  build-and-publish-release:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup and testing
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: yarn
+
+      - name: Install Dependencies
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Build Types Package
+        run: |
+          cd types
+          yarn build
+          
+      - name: Setup Yarn Workspace Links
+        run: |
+          yarn install --force
+          
+      - name: Run Tests
+        run: |
+          cd app
+          yarn test
+
+      # Docker build and publish
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract version from tag
+        run: |
+          TAG_NAME=${{ needs.release-please.outputs.tag_name }}
+          VERSION=${TAG_NAME#v}
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "TAGS=dastro/dastro-fullstack:${VERSION},dastro/dastro-fullstack:latest" >> $GITHUB_ENV
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          cache-from: type=gha,scope=fullstack-prod-cache
+          cache-to: type=gha,mode=max,scope=fullstack-prod-cache
+          tags: ${{ env.TAGS }} 

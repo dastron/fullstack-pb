@@ -3,9 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
+  "workspaces": [
+    "app",
+    "functions",
+    "types"
+  ],
   "scripts": {
     "setup": "chmod +x ./dev-setup.sh && ./dev-setup.sh",
-    "install": "yarn run setup && cd app && yarn install && cd ../functions && yarn install",
+    "install": "yarn run setup && cd types && yarn install && cd ../app && yarn install && cd ../functions && yarn install",
+    "build": "cd types && yarn build && cd ../app && yarn build && cd ../functions && yarn build",
     "pb": "./pocket_base/pocketbase serve --http=\"0.0.0.0:8090\" --hooksDir ./pb/pb_hooks",
     "pb:snapshot": "./pocket_base/pocketbase migrate collections",
     "dev": "concurrently \"cd app && yarn dev\" \"cd functions && yarn dev\" \"./pocket_base/pocketbase serve --http=\\\"0.0.0.0:8090\\\" --hooksDir ./pb/pb_hooks\"",
