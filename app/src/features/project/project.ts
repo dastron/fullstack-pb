@@ -1,5 +1,5 @@
 import pb from "@/pb";
-import { ProjectInputType, ProjectType } from "@/types";
+import { ProjectInputType, ProjectType } from "@project/types";
 import { moderateObject } from "@/utils/moderation";
 
 async function getProject(projectId: string) {

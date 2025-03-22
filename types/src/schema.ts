@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { StatusEnum } from "./enums";
 
-const baseSchema = {
+export const baseSchema = {
   id: z.string().describe("unique id"),
   collectionId: z.string().describe("collection id"),
   collectionName: z.string().describe("collection name"),
@@ -10,17 +10,17 @@ const baseSchema = {
   expand: z.record(z.any()).describe("expandable fields"),
 };
 
-const baseImageFileSchema = {
+export const baseImageFileSchema = {
   ...baseSchema,
   thumbnailURL: z.string().optional(),
   imageFiles: z.array(z.string()),
 };
 
-const inputImageFileSchema = {
+export const inputImageFileSchema = {
   imageFiles: z.array(z.instanceof(File)),
 };
 
-const omitImageFilesSchema = {
+export const omitImageFilesSchema = {
   imageFiles: true,
 } as const;
 
