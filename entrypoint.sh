@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Display version information if available
+if [ -n "$VERSION" ]; then
+    echo "Starting application version: $VERSION"
+fi
+
 check_files() {
     if [ -f "/pb/pb_data/auxiliary.db-shm" ]  || \
         [ -f "/pb/pb_data/auxiliary.db-wal" ] || \

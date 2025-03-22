@@ -123,3 +123,18 @@ The following Docker image tags are available:
 - `dastro/dastro-fullstack:nightly` - Latest nightly build
 - `dastro/dastro-fullstack:nightly-YYYYMMDD` - Specific nightly build date
 - `dastro/dastro-fullstack:manual-*` - Manual builds from the workflow_dispatch trigger
+
+### Versioning
+
+This project uses semantic versioning managed by Release Please. When a new release is created:
+
+1. The version number is automatically incremented based on commit types (e.g., feat, fix)
+2. The version is passed to the Docker build process as a build argument
+3. The Docker image is tagged with both the specific version and "latest"
+4. Inside the Docker image:
+   - The version is available as an environment variable
+   - Frontend apps can access it via `VITE_APP_VERSION`
+   - Backend services can access it via `APP_VERSION`
+   - The version is displayed in logs during container startup
+
+Nightly builds include the date in the version (e.g., "nightly-20240515") for traceability.
