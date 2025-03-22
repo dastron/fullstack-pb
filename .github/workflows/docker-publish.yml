@@ -1,9 +1,10 @@
-name: Test, Build and Publish Docker Image
+name: Build and Publish Production Docker Image
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   test-build-publish:
@@ -52,13 +53,31 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # Generate production tags with versions
+      - name: Generate Docker Tags
+        id: docker_tags
+        run: |
+          # Get package.json version or default to 0.0.1
+          if [ -f "package.json" ]; then
+            VERSION=$(node -p "require('./package.json').version || '0.0.1'")
+          else
+            VERSION="0.0.1"
+          fi
+          
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          
+          # For main branch pushes - tag with version, latest, and commit SHA
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "TAGS=dastro/dastro-fullstack:${VERSION},dastro/dastro-fullstack:latest,dastro/dastro-fullstack:${SHORT_SHA}" >> $GITHUB_ENV
+          # For manual workflow runs
+          else
+            echo "TAGS=dastro/dastro-fullstack:manual-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+          fi
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
           push: true
-          # Use GitHub Actions cache for build layers and adjust the key/scope if desired
-          cache-from: type=gha,scope=fullstack-cache
-          cache-to: type=gha,mode=max,scope=fullstack-cache
-          tags: |
-            dastro/dastro-fullstack-dev:latest
-            dastro/dastro-fullstack-dev:0.0.1
+          cache-from: type=gha,scope=fullstack-prod-cache
+          cache-to: type=gha,mode=max,scope=fullstack-prod-cache
+          tags: ${{ env.TAGS }}
