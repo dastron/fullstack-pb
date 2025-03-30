@@ -8,30 +8,30 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
+      # 1) Check out the code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2) Install Node 22 and enable Yarn caching
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'yarn'
-          
+          node-version: '22'
+          cache: yarn
+
+      # 3) Install dependencies (immutable = locked versions, no updates)
       - name: Install Dependencies
         run: |
-          yarn install --frozen-lockfile
-          
-      - name: Build Types Package
+          yarn install --immutable
+
+      # 4) Build all packages (topological if your scripts call 'yarn workspaces foreach')
+      - name: Build Monorepo
         run: |
-          cd types
           yarn build
-          
-      - name: Setup Yarn Workspace Links
-        run: |
-          yarn install --force
-          
+
+      # 5) Run Tests
       - name: Run Tests
         run: |
-          cd app
-          yarn test 
+          yarn test

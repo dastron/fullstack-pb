@@ -16,10 +16,10 @@ app.post("/functions/moderator", async (req: Request, res: Response) => {
     const authToken = req.headers["authorization"] as string;
     const isTokenValid = await validateToken(authToken);
 
-    // if (!isTokenValid) {
-      // res.status(401).json({ error: "Invalid token" });
+    if (!isTokenValid) {
+      res.status(401).json({ error: "Invalid token" });
       // return;
-    // }
+    }
 
     const message = req.body.message;
     const moderation = await processContentModeration(message);
@@ -34,4 +34,3 @@ app.post("/functions/moderator", async (req: Request, res: Response) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-

@@ -5,7 +5,7 @@ import type {
   ProjectType,
   UserInputType,
   UserType,
-} from "./src/types";
+} from "@project/shared/schema";
 
 interface CollectionConfig<I, T> {
   input: I;

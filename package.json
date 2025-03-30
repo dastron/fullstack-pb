@@ -6,24 +6,34 @@
   "workspaces": [
     "app",
     "functions",
-    "types"
+    "shared"
   ],
   "scripts": {
-    "setup": "yarn run setup:script && yarn run setup:install",
+    "setup": "yarn run setup:script && yarn run setup:install && yarn run setup:build",
     "setup:script": "chmod +x ./dev-setup.sh && ./dev-setup.sh",
-    "setup:install": "cd types && yarn install && cd ../app && yarn install && cd ../functions && yarn install",
-    "build": "cd types && yarn build && cd ../app && yarn build && cd ../functions && yarn build",
-    "pb": "./pocket_base/pocketbase serve --http=\"0.0.0.0:8090\" --hooksDir ./pb/pb_hooks",
+    "setup:install": "yarn install",
+    "setup:build": "yarn build",
+    "build": "yarn workspaces foreach --all --topological run build",
+    "pb": "./pocket_base/pocketbase serve --http=\"0.0.0.0:8080\" --hooksDir ./pb/pb_hooks",
     "pb:snapshot": "./pocket_base/pocketbase migrate collections",
-    "dev": "concurrently \"cd app && yarn dev\" \"cd functions && yarn dev\" \"./pocket_base/pocketbase serve --http=\\\"0.0.0.0:8090\\\" --hooksDir ./pb/pb_hooks\"",
+    "dev": "concurrently \"yarn workspace @project/shared dev\" \"yarn workspace @project/app dev\" \"yarn workspace @project/functions dev\" \"./pocket_base/pocketbase serve --http=\\\"0.0.0.0:8080\\\" --hooksDir ./pb/pb_hooks\"",
     "staging": "docker run --rm -it --env-file \".dockerEnv\" -p 8081:8081 -p 8000:80 -p 8080:8080 $(docker build -q .)",
-    "test": "cd app && yarn test"
+    "test": "yarn workspaces foreach --all run test",
+    "clean": "yarn workspaces foreach --all run clean",
+    "lint": "yarn workspaces foreach --all run lint",
+    "test:all": "yarn workspaces foreach --all run test",
+    "format": "yarn workspaces foreach --all run format",
+    "typecheck": "yarn workspaces foreach -ptv run typecheck",
+    "outdated": "yarn workspaces foreach -pR run npm outdated",
+    "update-deps": "yarn up -R '*'",
+    "focus": "yarn workspaces focus",
+    "why": "yarn why"
   },
-  "repository": "https://github.com/dastron/inventory-ware.git",
+  "author": "dastron <erik.danford@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "^9.1.0",
-    "prettier": "^3.5.1"
+    "concurrently": "^9.1.2",
+    "prettier": "^3.5.3"
   },
-  "dependencies": {}
+  "packageManager": "yarn@4.8.1"
 }

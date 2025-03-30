@@ -1,10 +1,10 @@
-import type { UserInputType } from "@project/types";
+import type { UserInputType } from "@project/schema";
 
 import { Stack, Input, Button } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import Field from "@/components/FormField";
-import { UserInputSchema } from "@project/types";
+import { UserInputSchema } from "@project/schema";
 import useAuth from "@/hooks/useAuth";
 import { useSearchParams } from "react-router-dom";
 

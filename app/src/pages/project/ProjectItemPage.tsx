@@ -1,6 +1,6 @@
 import ProjectCard from "@/features/project/ProjectCard";
 import pb from "@/pb";
-import type { ProjectType } from "@project/types";
+import type { ProjectType } from "@project/schema";
 import { Heading, Stack } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 
