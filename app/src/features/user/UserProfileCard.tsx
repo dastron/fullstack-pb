@@ -13,7 +13,7 @@ import {
   Badge,
   Avatar,
 } from "@chakra-ui/react";
-import { UserType } from "@project/schema";
+import type { UserType } from "@project/shared/types";
 
 interface UserProfileCardProps {
   user: UserType;

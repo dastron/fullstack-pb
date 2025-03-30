@@ -4,9 +4,7 @@
   "private": true,
   "main": "index.js",
   "workspaces": [
-    "app",
-    "functions",
-    "shared"
+    "./*"
   ],
   "scripts": {
     "setup": "yarn run setup:script && yarn run setup:install && yarn run setup:build",

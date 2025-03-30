@@ -1,4 +1,4 @@
-import type { UserInputType, UserType } from "@project/schema";
+import type { UserInputType, UserType } from "@project/shared/types";
 import pb from "@/pb";
 import { useState, useEffect, useCallback } from "react";
 

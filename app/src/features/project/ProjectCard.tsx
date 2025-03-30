@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardBody, Stack, Heading, Text, HStack } from "@chakra-ui/react";
-import type { ProjectType } from "@project/schema";
+import type { ProjectType } from "@project/shared/types";
 import { Link } from "react-router-dom";
 import MarkdownText from "@/components/MarkdownText";
 import { ImageViewer } from "@/components/images/ImageViewer";
