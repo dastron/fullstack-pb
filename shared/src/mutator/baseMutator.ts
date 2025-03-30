@@ -7,7 +7,7 @@ import {
   RecordService,
 } from "pocketbase";
 
-interface Defaults {
+export interface MutatorOptions {
   expand: string[];
   filter: string[];
   sort: string[];
@@ -18,14 +18,51 @@ interface Defaults {
 export abstract class BaseMutator<T extends RecordModel, InputType> {
   protected pb: TypedPocketBase;
 
-  protected defaults: Defaults = {
+  // Define a default property that subclasses will override
+  protected options: MutatorOptions = {
     expand: [],
     filter: [],
     sort: [],
   };
 
-  constructor(pb: TypedPocketBase) {
+  constructor(pb: TypedPocketBase, options?: Partial<MutatorOptions>) {
     this.pb = pb;
+
+    // Initialize with default options first
+    this.initializeOptions();
+    if (options) {
+      this.overrideOptions(options);
+    }
+  }
+
+  private initializeOptions(): void {
+    this.options = this.setDefaults();
+  }
+  /**
+   * Initialize options with class-specific defaults
+   * Subclasses should override this instead of directly setting options
+   */
+  protected setDefaults(): MutatorOptions {
+    return {
+      expand: [],
+      filter: [],
+      sort: [],
+    };
+  }
+
+  /**
+   * Merge provided options with current options
+   */
+  protected overrideOptions(newOptions: Partial<MutatorOptions>): void {
+    if (newOptions.expand !== undefined) {
+      this.options.expand = newOptions.expand;
+    }
+    if (newOptions.filter !== undefined) {
+      this.options.filter = newOptions.filter;
+    }
+    if (newOptions.sort !== undefined) {
+      this.options.sort = newOptions.sort;
+    }
   }
 
   /**
@@ -64,6 +101,19 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     } catch (error) {
       return this.errorWrapper(error);
     }
+  }
+
+  /**
+   * Create or update entity (upsert)
+   */
+  async upsert(input: InputType & { id?: string }): Promise<T> {
+    if (input?.id) {
+      return await this.update(input.id, input as Partial<T>);
+    }
+
+    // Implementations should override this method if they need
+    // more specific upsert logic like checking for existing entities
+    return await this.create(input);
   }
 
   /**
@@ -119,19 +169,6 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
   }
 
   /**
-   * Create or update entity (upsert)
-   */
-  async upsert(input: InputType & { id?: string }): Promise<T> {
-    if (input?.id) {
-      return await this.update(input.id, input as Partial<T>);
-    }
-
-    // Implementations should override this method if they need
-    // more specific upsert logic like checking for existing entities
-    return await this.create(input);
-  }
-
-  /**
    * Delete entity by ID
    */
   async delete(id: string): Promise<boolean> {
@@ -174,12 +211,12 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
    */
   protected prepareExpand(expand?: string | string[]): string | undefined {
     // Handle empty defaults case
-    if (!this.defaults.expand.length && !expand) {
+    if (!this.options.expand.length && !expand) {
       return undefined;
     }
 
     // Convert all inputs to arrays for easy processing
-    let expandArray: string[] = [...this.defaults.expand];
+    let expandArray: string[] = [...this.options.expand];
 
     if (expand) {
       // If expand is a string, split it and add the parts
@@ -205,7 +242,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     }
 
     // Join with comma and space
-    return uniqueExpands.join(", ");
+    return uniqueExpands.join(",");
   }
 
   /**
@@ -214,12 +251,12 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
    */
   protected prepareFilter(filter?: string | string[]): string | undefined {
     // Handle empty case
-    if (!this.defaults.filter.length && !filter) {
+    if (!this.options.filter.length && !filter) {
       return undefined;
     }
 
     // Convert all inputs to arrays for easy processing
-    let filterArray: string[] = [...this.defaults.filter];
+    let filterArray: string[] = [...this.options.filter];
 
     if (filter) {
       // If filter is a string, add it as is (it might contain && already)
@@ -241,7 +278,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     }
 
     // Join with AND operator
-    return validFilters.join(" && ");
+    return validFilters.join("&&");
   }
 
   /**
@@ -255,15 +292,15 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     }
 
     // If no explicit sort but we have defaults
-    if (this.defaults.sort.length) {
+    if (this.options.sort.length) {
       // Filter out empty and undefined values
-      const validSorts = this.defaults.sort.filter(
+      const validSorts = this.options.sort.filter(
         (s) => s !== "" && s !== undefined,
       );
 
       // If we have valid sort items after filtering
       if (validSorts.length) {
-        return validSorts.join(", ");
+        return validSorts.join(",");
       }
     }
 

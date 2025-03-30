@@ -1,4 +1,4 @@
-import { BaseMutator } from "./baseMutator";
+import { BaseMutator, MutatorOptions } from "./baseMutator";
 import { UserInputType, UserType, TypedPocketBase } from "../types";
 import { UserInputSchema } from "../schema";
 
@@ -8,9 +8,8 @@ import { UserInputSchema } from "../schema";
  */
 
 export class UserMutator extends BaseMutator<UserType, UserInputType> {
-  constructor(pb: TypedPocketBase) {
-    super(pb);
-    this.defaults = {
+  protected setDefaults(): MutatorOptions {
+    return {
       expand: [],
       filter: [],
       sort: ["-updated"],

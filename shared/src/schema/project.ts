@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { StatusEnum } from "../enums";
 import {
-  baseSchema,
   baseImageFileSchema,
   inputImageFileSchema,
   omitImageFilesSchema,
