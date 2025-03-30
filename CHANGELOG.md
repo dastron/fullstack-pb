@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/dastron/fullstack-pb/compare/v1.0.2...v1.1.0) (2025-03-30)
+
+
+### Features
+
+* move over to yarn v4 ([5f501b9](https://github.com/dastron/fullstack-pb/commit/5f501b9e020b9a738f38a4b2f8bad76d5920f2cb))
+
 ## [1.0.2](https://github.com/dastron/fullstack-pb/compare/v1.0.1...v1.0.2) (2025-03-22)
 
 
