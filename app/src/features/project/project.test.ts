@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { ProjectInputSchema } from "@project/types";
-import type { ProjectInputType } from "@project/types";
+import { ProjectInputSchema } from "@project/shared/schema";
+import type { ProjectInputType } from "@project/shared/types";
 import { createProject } from "./project";
 
 describe("createProject function", () => {

@@ -13,9 +13,11 @@ yarn install
 # Build the package
 yarn build
 
-# Start development mode with watch
+# Start development mode with file watching
 yarn dev
 ```
+
+> **Note:** The `yarn dev` command uses nodemon to watch for changes in the `src` directory and automatically runs the build process whenever a file changes. This ensures that `.d.ts` type declaration files are always generated with each change.
 
 ### Using in Other Projects
 

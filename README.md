@@ -1,11 +1,18 @@
-# Fullstack
+# FULLSTACK-PB-TEMPLATE
 
 ## Overview
 
 Fullstack is a comprehensive full stack project designed.
 
-
 ## Scripts
+
+### Setup Project
+
+Complete setup of the project (run scripts, install dependencies, build):
+
+```bash
+yarn setup
+```
 
 ### Install Dependencies
 
@@ -15,9 +22,17 @@ Install dependencies for all workspaces:
 yarn install
 ```
 
+### Build Project
+
+Build all workspaces:
+
+```bash
+yarn build
+```
+
 ### Run Development Environment
 
-Starts the frontend, backend, and PocketBase server concurrently:
+Starts the frontend, backend, shared workspace, and PocketBase server concurrently:
 
 ```bash
 yarn dev
@@ -47,16 +62,32 @@ Builds and runs the Docker container for staging:
 yarn staging
 ```
 
+### Additional Scripts
+
+```bash
+yarn test         # Run tests across all workspaces
+yarn clean        # Clean all workspaces
+yarn lint         # Run linting across all workspaces
+yarn format       # Format code across all workspaces
+yarn typecheck    # Run type checking across all workspaces
+yarn outdated     # Check for outdated packages
+yarn update-deps  # Update all dependencies
+yarn focus        # Focus on a specific workspace
+yarn why          # Check why a package is installed
+```
+
 ## Project Structure
 
 ```
-fullstack/
+project/
 ├── app/           # Vite React frontend
 │   └── package.json
 ├── functions/     # Node.js/Express backend
 │   └── package.json
-├── pocket_base/   # PocketBase backend
-├── package.json    # Root configuration
+├── shared/        # Shared code between workspaces
+│   └── package.json
+├── pb/   # PocketBase backend
+├── package.json   # Root configuration
 └── README.md
 ```
 
@@ -64,7 +95,7 @@ fullstack/
 
 ### Prerequisites
 
-- [Yarn](https://yarnpkg.com/) v1 or higher
+- [Yarn](https://yarnpkg.com/) v4.7.0 or higher
 - [Node.js](https://nodejs.org/) v14 or higher
 - [Docker](https://www.docker.com/) for staging deployment
 
@@ -73,14 +104,21 @@ fullstack/
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/dastron/fullstack-pb.git
-    cd fullstack-pb
+    git clone https://github.com/dastron/project.git
+    cd project
     ```
 
-2. Install dependencies:
+2. Complete setup (includes installation and build):
+
+    ```bash
+    yarn setup
+    ```
+
+   Or install dependencies and build separately:
 
     ```bash
     yarn install
+    yarn build
     ```
 
 ### Running the Project
@@ -91,7 +129,22 @@ Start the development environment:
 yarn dev
 ```
 
-This will concurrently run the React frontend, Express backend, and PocketBase server.
+This will concurrently run the shared workspace, React frontend, Express backend, and PocketBase server.
+
+## Working with Workspaces
+
+This project uses Yarn Workspaces to manage dependencies across multiple packages:
+
+```bash
+# To work on a specific workspace
+yarn workspace @project/app <command>
+
+# To run commands across all workspaces
+yarn workspaces foreach <command>
+
+# To focus on a specific workspace
+yarn focus @project/app
+```
 
 ## Release Process
 
@@ -118,11 +171,10 @@ This project uses [Release Please](https://github.com/googleapis/release-please)
 
 The following Docker image tags are available:
 
-- `dastro/dastro-fullstack:latest` - Latest stable release
-- `dastro/dastro-fullstack:x.y.z` - Specific version (e.g., 1.0.0)
-- `dastro/dastro-fullstack:nightly` - Latest nightly build
-- `dastro/dastro-fullstack:nightly-YYYYMMDD` - Specific nightly build date
-- `dastro/dastro-fullstack:manual-*` - Manual builds from the workflow_dispatch trigger
+- `dastro/project:latest` - Latest stable release
+- `dastro/project:x.y.z` - Specific version (e.g., 1.0.0)
+- `dastro/project:nightly` - Latest nightly build
+- `dastro/project:nightly-YYYYMMDD` - Specific nightly build date
 
 ### Versioning
 

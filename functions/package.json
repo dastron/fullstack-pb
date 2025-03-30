@@ -1,5 +1,5 @@
 {
-  "name": "fullstack-pb-functions",
+  "name": "@project/functions",
   "version": "1.0.0",
   "private": true,
   "main": "./dist/index.js",
@@ -8,26 +8,27 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "build": "tsc",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "format": "prettier --write ./src"
   },
   "dependencies": {
+    "@project/shared": "workspace:*",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.1",
-    "openai": "^4.72.0",
-    "pocketbase": "^0.21.5",
-    "@project/types": "file:../types",
-    "tsx": "^4.19.2",
-    "zod": "^3.23.8"
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.90.0",
+    "pocketbase": "^0.25.2",
+    "tsx": "^4.19.3",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/node": "^22.9.0",
-    "nodemon": "^3.1.7",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.14",
+    "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.8.2"
   }
 }

@@ -1,5 +1,5 @@
 import { useLoaderData, useParams } from "react-router-dom";
-import type { ProjectType } from "@project/types";
+import type { ProjectType } from "@project/shared/types";
 import type { ListResult } from "pocketbase";
 import { Stack, Heading } from "@chakra-ui/react";
 import pb from "@/pb";

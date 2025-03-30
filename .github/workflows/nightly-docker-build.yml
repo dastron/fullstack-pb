@@ -4,42 +4,40 @@ on:
   push:
     branches:
       - dev
-  workflow_dispatch:  # Allow manual trigger
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   build-nightly:
     runs-on: ubuntu-latest
 
     steps:
+      # 1) Check out the code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Setup and testing
+      # 2) Install Node 22 and enable Yarn caching
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: yarn
 
+      # 3) Install dependencies (immutable = locked versions, no updates)
       - name: Install Dependencies
         run: |
-          yarn install --frozen-lockfile
+          yarn install --immutable
 
-      - name: Build Types Package
+      # 4) Build all packages (topological if your scripts call 'yarn workspaces foreach')
+      - name: Build Monorepo
         run: |
-          cd types
           yarn build
-          
-      - name: Setup Yarn Workspace Links
-        run: |
-          yarn install --force
-          
+
+      # 5) Run Tests
       - name: Run Tests
         run: |
-          cd app
           yarn test
 
-      # Docker build and publish
+      # 6) Docker build & push steps
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -55,10 +53,10 @@ jobs:
       - name: Generate nightly tag
         run: |
           NIGHTLY_DATE=$(date +'%Y%m%d')
-          NIGHTLY_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-          echo "TAGS=dastro/dastro-fullstack:nightly-${NIGHTLY_DATE},dastro/dastro-fullstack:nightly-${NIGHTLY_DATE}-${NIGHTLY_SHA},dastro/dastro-fullstack:nightly" >> $GITHUB_ENV
+          echo "TAGS=dastro/fullstack-pb-template:nightly-${NIGHTLY_DATE},dastro/fullstack-pb-template:nightly" >> $GITHUB_ENV
           echo "VERSION=nightly-${NIGHTLY_DATE}" >> $GITHUB_ENV
 
+      # 7) Build & push the Docker image with GHA caching for layers
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
@@ -67,4 +65,4 @@ jobs:
           cache-to: type=gha,mode=max,scope=fullstack-nightly-cache
           tags: ${{ env.TAGS }}
           build-args: |
-            VERSION=${{ env.VERSION }} 
+            VERSION=${{ env.VERSION }}
