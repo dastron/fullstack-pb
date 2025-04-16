@@ -1,4 +1,4 @@
-import { BaseMutator } from "./baseMutator";
+import { BaseMutator, MutatorOptions } from "./baseMutator";
 import { ProjectInputType, ProjectType, TypedPocketBase } from "../types";
 import { ProjectInputSchema } from "../schema";
 
@@ -8,9 +8,8 @@ import { ProjectInputSchema } from "../schema";
  */
 
 export class ProjectMutator extends BaseMutator<ProjectType, ProjectInputType> {
-  constructor(pb: TypedPocketBase) {
-    super(pb);
-    this.defaults = {
+  protected setDefaults(): MutatorOptions {
+    return {
       expand: [],
       filter: [],
       sort: ["-updated"],
