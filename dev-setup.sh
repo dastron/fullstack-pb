@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default PocketBase version if not set in environment
-DEFAULT_PB_VERSION="0.25.5"
+DEFAULT_PB_VERSION="0.27.0"
 PB_VERSION=${PB_VERSION:-$DEFAULT_PB_VERSION}
 PB_PATH="./pocket_base"
 

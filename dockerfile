@@ -41,7 +41,7 @@ RUN yarn build
 ###################################################
 FROM alpine:latest AS pocketbase
 
-ARG PB_VERSION=0.25.5
+ARG PB_VERSION=0.27.0
 ARG TARGETARCH
 ENV ACTUAL_PB_VERSION=${PB_VERSION}
 
