@@ -7,7 +7,7 @@
     "./*"
   ],
   "scripts": {
-    "setup": "yarn run setup:script && yarn run setup:install && yarn run setup:build",
+    "setup": "yarn install && yarn run setup:script && yarn run setup:install && yarn run setup:build",
     "setup:script": "chmod +x ./dev-setup.sh && ./dev-setup.sh",
     "setup:install": "yarn install",
     "setup:build": "yarn build",
