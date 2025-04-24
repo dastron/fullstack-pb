@@ -1,8 +1,8 @@
 import type { ProjectType } from "@project/shared/types";
 import type { ListResult } from "pocketbase";
 
-import { Heading, Stack, Button, Flex, Spacer } from "@chakra-ui/react";
-import { useLoaderData, useParams, Link } from "react-router-dom";
+import { Button, Flex, Heading, Spacer, Stack } from "@chakra-ui/react";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 
 import { CardPattern } from "@/components/CardPattern";
 import SearchQueryHeader from "@/components/search/SearchQueryHeader";
@@ -29,11 +29,7 @@ const ProjectListPage = () => {
       <Flex align="center">
         <Heading>{title}</Heading>
         <Spacer />
-        <Button
-          as={Link}
-          to="./new"
-          colorScheme="blue"
-        >
+        <Button as={Link} to="./new" colorScheme="blue">
           Create New Project
         </Button>
       </Flex>

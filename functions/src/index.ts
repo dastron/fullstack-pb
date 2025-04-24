@@ -29,7 +29,7 @@ app.post("/functions/moderator", async (req: Request, res: Response) => {
   }
 });
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });

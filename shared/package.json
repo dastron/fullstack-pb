@@ -32,8 +32,7 @@
     "build": "tsup",
     "dev": "nodemon",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write ./src",
-    "lint": "eslint src --fix"
+    "format": "prettier --write ./src"
   },
   "license": "MIT",
   "devDependencies": {

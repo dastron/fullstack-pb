@@ -1,5 +1,5 @@
 import type { ProjectType } from "@project/shared/types"; // Assuming ProjectType is defined here
-import type { UnsubscribeFunc, RecordSubscription } from "pocketbase";
+import type { RecordSubscription, UnsubscribeFunc } from "pocketbase";
 
 import { useEffect, useRef } from "react";
 
@@ -8,8 +8,8 @@ import pb from "@/pb";
 export function useProjectItemSubscription(
   projectId: string | undefined | null,
   onUpdate: (event: RecordSubscription<ProjectType>) => void,
-  onError?: (error: Error) => void,
-): void { 
+  onError?: (error: Error) => void
+): void {
   const unsubscribeRef = useRef<UnsubscribeFunc | null>(null);
   const isMountedRef = useRef<boolean>(true);
   const onUpdateRef = useRef(onUpdate);
@@ -52,7 +52,7 @@ export function useProjectItemSubscription(
           console.error(`Subscription failed (Projects/${currentProjectId}):`, err);
           onErrorRef.current?.(err instanceof Error ? err : new Error("Subscription failed"));
         } else {
-           console.error(`Subscription failed (unmounted): Projects/${currentProjectId}`, err);
+          console.error(`Subscription failed (unmounted): Projects/${currentProjectId}`, err);
         }
       });
 
@@ -63,9 +63,9 @@ export function useProjectItemSubscription(
         try {
           pb.collection("Projects").unsubscribe(currentProjectId);
         } catch (cleanupErr: any) {
-           if (!(typeof cleanupErr?.message === 'string' && cleanupErr.message.includes("No subscription"))) {
-                console.error(`Error during direct unsubscribe call for Projects/${currentProjectId}:`, cleanupErr);
-           }
+          if (!(typeof cleanupErr?.message === "string" && cleanupErr.message.includes("No subscription"))) {
+            console.error(`Error during direct unsubscribe call for Projects/${currentProjectId}:`, cleanupErr);
+          }
         }
       }
 

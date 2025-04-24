@@ -1,4 +1,13 @@
-import { ListResult, RecordListOptions, RecordModel, RecordOptions, RecordService, RecordSubscription, RecordSubscribeOptions, UnsubscribeFunc } from "pocketbase";
+import {
+  ListResult,
+  RecordListOptions,
+  RecordModel,
+  RecordOptions,
+  RecordService,
+  RecordSubscribeOptions,
+  RecordSubscription,
+  UnsubscribeFunc,
+} from "pocketbase";
 import { TypedPocketBase } from "../types";
 
 export interface MutatorOptions {
@@ -427,7 +436,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
   ): Promise<UnsubscribeFunc> {
     const finalExpand = this.prepareExpand(expand);
     const options: RecordSubscribeOptions = finalExpand ? { expand: finalExpand } : {};
-    
+
     return this.getCollection().subscribe(id, callback, options);
   }
 
@@ -443,7 +452,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
   ): Promise<UnsubscribeFunc> {
     const finalExpand = this.prepareExpand(expand);
     const options: RecordSubscribeOptions = finalExpand ? { expand: finalExpand } : {};
-    
+
     return this.getCollection().subscribe("*", callback, options);
   }
 

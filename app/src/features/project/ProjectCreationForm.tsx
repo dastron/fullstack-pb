@@ -1,6 +1,6 @@
 import type { ProjectInputType, ProjectType } from "@project/shared/types";
 
-import { Button, Input, Select, Stack, Textarea } from "@chakra-ui/react";
+import { Button, Input, Stack, Textarea } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StatusEnum } from "@project/shared/enums";
 import { ProjectInputSchema } from "@project/shared/schema";
@@ -95,15 +95,6 @@ const ProjectForm = ({ redirect = true, onSuccess }: ProjectCreationFormProps) =
 
         <Field label="Project Description" invalid={!!errors.content} errorText={errors.content?.message}>
           <Textarea data-testid="project-description-input" height="250px" {...register("content")} />
-        </Field>
-
-        <Field label="Project Length">
-          <Select data-testid="duration-select">
-            <option value="6">6 Months</option>
-            <option value="12">12 Months</option>
-            <option value="24">24 Months</option>
-            <option value="indefinite">Indefinite</option>
-          </Select>
         </Field>
 
         <Button data-testid="submit-project-button" w="100%" type="submit">
