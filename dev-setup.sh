@@ -5,6 +5,14 @@ DEFAULT_PB_VERSION="0.27.0"
 PB_VERSION=${PB_VERSION:-$DEFAULT_PB_VERSION}
 PB_PATH="./pocket_base"
 
+# Load superuser credentials from .env file if it exists
+if [ -f ".env" ]; then
+    echo "Loading superuser credentials from .env file..."
+    # Simple approach to load just the two variables we need
+    export $(grep -E "^PB_SUPERUSER_EMAIL=" .env)
+    export $(grep -E "^PB_SUPERUSER_PASSWORD=" .env)
+fi
+
 # Determine operating system
 OS=$(uname -s)
 case $OS in
@@ -72,6 +80,31 @@ if [ -d "./pb/pb_data" ]; then
     echo "Copying data..."
     mkdir -p "${PB_PATH}/pb_data"
     cp -R ./pb/pb_data/* "${PB_PATH}/pb_data/"
+fi
+
+# Check if superuser credentials are provided and valid
+if [ -n "$PB_SUPERUSER_EMAIL" ] && [ -n "$PB_SUPERUSER_PASSWORD" ]; then
+    echo "Superuser credentials provided. Validating..."
+    # Basic email format validation
+    if echo "$PB_SUPERUSER_EMAIL" | grep -qE '^[^ ]+@[^ ]+\.[^ ]+$'; then
+        # Password length validation
+        if [ ${#PB_SUPERUSER_PASSWORD} -ge 10 ]; then
+            echo "Credentials valid. Attempting to create superuser..."
+            "${PB_PATH}/pocketbase" superuser upsert "$PB_SUPERUSER_EMAIL" "$PB_SUPERUSER_PASSWORD"
+            # Check the exit status of the command
+            if [ $? -eq 0 ]; then
+                echo "Superuser created successfully or already exists."
+            else
+                echo "Failed to create superuser. Check PocketBase logs for details."
+            fi
+        else
+            echo "Password validation failed: Password must be at least 10 characters long."
+        fi
+    else
+        echo "Email validation failed: Invalid email format."
+    fi
+else
+    echo "Superuser credentials not provided or incomplete. Skipping superuser creation."
 fi
 
 echo "Setup complete!"

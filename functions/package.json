@@ -16,7 +16,6 @@
   "dependencies": {
     "@project/shared": "workspace:*",
     "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "openai": "^4.95.1",
     "pocketbase": "^0.26.0",
@@ -34,6 +33,7 @@
     "globals": "^16.0.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.0"
   }

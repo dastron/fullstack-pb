@@ -1,18 +1,18 @@
 import type { UserType } from "@project/shared/types";
 
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  Stack,
-  Heading,
-  Text,
+  Avatar,
+  Badge,
   Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
   Grid,
   GridItem,
-  Flex,
-  Badge,
-  Avatar,
+  Heading,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
 
 interface UserProfileCardProps {

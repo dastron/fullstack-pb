@@ -1,5 +1,5 @@
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import ProjectForm from "./ProjectCreationForm";
 

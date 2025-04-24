@@ -1,5 +1,5 @@
 import { LinkIcon } from "@chakra-ui/icons";
-import { Table, Text, Thead, Tr, Th, Tbody, Td, Button, Box, IconButton, Image } from "@chakra-ui/react";
+import { Box, Button, IconButton, Image, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 
 import DateRelativeText from "./DateRelativeText";

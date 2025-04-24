@@ -2,73 +2,72 @@
 
 ## Overview
 
-Fullstack is a comprehensive full stack project designed.
+Fullstack is a comprehensive full stack project template with React frontend, Node.js/Express backend, and PocketBase database.
 
-## Scripts
-
-### Setup Project
-
-Complete setup of the project (run scripts, install dependencies, build):
+## Quick Start
 
 ```bash
-yarn setup
-```
+# Clone the repository
+git clone https://github.com/dastron/project.git
+cd project
 
-### Install Dependencies
-Install dependencies for all workspaces:
-
-```bash
+# Install dependencies
 yarn install
-```
 
-### Build Project
+# Complete setup (runs scripts, builds everything)
+yarn setup
 
-Build all workspaces:
-
-```bash
-yarn build
-```
-
-### Run Development Environment
-
-Starts the frontend, backend, shared workspace, and PocketBase server concurrently:
-
-```bash
+# Start development environment
 yarn dev
 ```
 
-### Serve PocketBase
+## Scripts
 
-Launches the PocketBase server:
+### Core Commands
 
 ```bash
-yarn pb
+# Install dependencies
+yarn install
+
+# Complete setup (runs scripts, installs dependencies, builds)
+yarn setup
+
+# Start development environment (frontend, backend, shared, PocketBase)
+yarn dev
+
+# Build all workspaces
+yarn build
+
 ```
 
-### Migrate Collections
-
-Applies database migrations:
+### Database Commands
 
 ```bash
+# Run PocketBase server only
+yarn pb
+
+# Sync dev database migrations to/from project
+yarn pb:sync
+
+
+# Creates a migration snapshot of the current pb
 yarn pb:snapshot
 ```
 
-### Deploy to Staging
-
-Builds and runs the Docker container for staging:
-
-```bash
-yarn staging
-```
-
-### Additional Scripts
+### Testing & Quality
 
 ```bash
 yarn test         # Run tests across all workspaces
-yarn clean        # Clean all workspaces
+yarn check        # Run all checks (format, lint, typecheck)
 yarn lint         # Run linting across all workspaces
 yarn format       # Format code across all workspaces
 yarn typecheck    # Run type checking across all workspaces
+yarn clean        # Clean all workspaces
+```
+
+### Dependency Management
+
+```bash
 yarn outdated     # Check for outdated packages
 yarn update-deps  # Update all dependencies
 yarn focus        # Focus on a specific workspace
@@ -85,50 +84,72 @@ project/
 │   └── package.json
 ├── shared/        # Shared code between workspaces
 │   └── package.json
-├── pb/   # PocketBase backend
+├── pb/            # PocketBase backend
 ├── package.json   # Root configuration
 └── README.md
 ```
 
-## Getting Started
+## Development Environment
 
 ### Prerequisites
 
 - [Yarn](https://yarnpkg.com/) v4.7.0 or higher
 - [Node.js](https://nodejs.org/) v14 or higher
-- [Docker](https://www.docker.com/) for staging deployment
+- [Docker](https://www.docker.com/) (optional, for production testing)
+
+### Environment Setup
+
+1. Create a `.env` file in the root directory by copying the example:
+
+   ```bash
+   cp .envExample .env
+   ```
+
+2. Configure the environment variables in `.env`:
+
+   ```
+   # Functions Service (Node)
+   FUNCTIONS_PORT=8081
+   API_URL='http://localhost:8080' # PocketBase URL for backend
+   OPENAI_API_KEY='sk-proj-...'
+   PB_SUPERUSER_EMAIL='admin@example.com'
+   PB_SUPERUSER_PASSWORD='password'
+
+   # App Service (Vite)
+   VITE_FUNCTIONS_URL='http://localhost:8081' # Functions URL for frontend
+   VITE_POCKETBASE_URL='http://localhost:8080' # PocketBase URL for frontend
+
+   # PocketBase (used in docker/staging)
+   PB_VERSION=0.27.0 # Specify desired PocketBase version
+   ```
+
+3. Adjust the configuration as needed for your environment.
 
 ### Installation
 
-1. Clone the repository:
+1. Install dependencies:
 
     ```bash
-    git clone https://github.com/dastron/project.git
-    cd project
+    yarn install
     ```
 
-2. Complete setup (includes installation and build):
+2. Complete setup (runs scripts, installs dependencies, builds):
 
     ```bash
     yarn setup
     ```
 
-   Or install dependencies and build separately:
+3. Start the development environment:
 
     ```bash
-    yarn install
-    yarn build
+    yarn dev
     ```
 
-### Running the Project
-
-Start the development environment:
-
-```bash
-yarn dev
-```
-
-This will concurrently run the shared workspace, React frontend, Express backend, and PocketBase server.
+This will concurrently run:
+- Shared workspace watcher
+- React frontend (Vite)
+- Express backend
+- PocketBase server
 
 ## Working with Workspaces
 
@@ -144,6 +165,70 @@ yarn workspaces foreach <command>
 # To focus on a specific workspace
 yarn focus @project/app
 ```
+
+## Production Deployment
+
+### Docker
+
+You can run the application in a production-like environment using Docker:
+
+```bash
+# Build and run the Docker container locally
+yarn staging
+```
+
+#### Testing Docker Locally
+
+To manually build and run the Docker container:
+
+```bash
+# Build the Docker image
+docker build -t fullstack-pb-template:local .
+
+# Create a .dockerEnv file from .env
+cp .dockerEnvExample .dockerEnv
+
+# Run the container
+docker run --rm -it \
+  --env-file .dockerEnv \
+  -p 8081:8081 \
+  -p 8000:80 \
+  -p 8080:8080 \
+  fullstack-pb-template:local
+```
+
+This exposes:
+- Frontend on http://localhost:8000
+- PocketBase on http://localhost:8080
+- API functions on http://localhost:8081
+
+The Docker image includes:
+- Compiled frontend (served via Nginx)
+- Backend API server
+- PocketBase database
+- Process management with Supervisor
+
+### CI/CD with GitHub Actions
+
+This project uses GitHub Actions for continuous integration and deployment:
+
+1. **Automated Testing**: On every push and pull request, tests are run to ensure code quality.
+
+2. **Docker Image Building**: When a release is created or on pushes to the main branch:
+   - A Docker image is built using the multi-stage Dockerfile
+   - The image is tagged and pushed to the Docker registry
+   - Both versioned tags and latest/nightly tags are created
+
+3. **Release Management**: Release Please handles versioning based on conventional commits.
+
+### Docker Image Tags
+
+The following Docker image tags are available:
+
+- `dastro/project:latest` - Latest stable release
+- `dastro/project:x.y.z` - Specific version (e.g., 1.0.0)
+- `dastro/project:nightly` - Latest nightly build
+- `dastro/project:nightly-YYYYMMDD` - Specific nightly build date
 
 ## Release Process
 
@@ -164,28 +249,16 @@ This project uses [Release Please](https://github.com/googleapis/release-please)
    - Creates a new GitHub release with a generated changelog
    - Tags the release with the new version
    - Triggers the release Docker build workflow
-   - Try
-
-### Docker Images
-
-The following Docker image tags are available:
-
-- `dastro/project:latest` - Latest stable release
-- `dastro/project:x.y.z` - Specific version (e.g., 1.0.0)
-- `dastro/project:nightly` - Latest nightly build
-- `dastro/project:nightly-YYYYMMDD` - Specific nightly build date
 
 ### Versioning
 
 This project uses semantic versioning managed by Release Please. When a new release is created:
 
-1. The version number is automatically incremented based on commit types (e.g., feat, fix)
+1. The version number is automatically incremented based on commit types
 2. The version is passed to the Docker build process as a build argument
 3. The Docker image is tagged with both the specific version and "latest"
-4. Inside the Docker image:
+4. Inside the Docker container:
    - The version is available as an environment variable
    - Frontend apps can access it via `VITE_APP_VERSION`
    - Backend services can access it via `APP_VERSION`
    - The version is displayed in logs during container startup
-
-Nightly builds include the date in the version (e.g., "nightly-20240515") for traceability.

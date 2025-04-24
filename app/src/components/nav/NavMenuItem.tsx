@@ -1,5 +1,5 @@
 import { Icon } from "@chakra-ui/icons";
-import { MenuItem, HStack, Text } from "@chakra-ui/react";
+import { HStack, MenuItem, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 interface NavMenuItemProps {

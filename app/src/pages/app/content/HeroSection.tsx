@@ -1,5 +1,5 @@
-import { SettingsIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Box, Container, Heading, Text, SimpleGrid, VStack, Button, useColorModeValue } from "@chakra-ui/react";
+import { MoonIcon, SettingsIcon, SunIcon } from "@chakra-ui/icons";
+import { Box, Button, Container, Heading, SimpleGrid, Text, useColorModeValue, VStack } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 

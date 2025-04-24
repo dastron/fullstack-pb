@@ -2,15 +2,15 @@ import { CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Card,
+  CardBody,
   FormControl,
   FormErrorMessage,
   IconButton,
   Image,
   SimpleGrid,
-  Card,
-  CardBody,
 } from "@chakra-ui/react";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface ImageUploadInputProps {
   name: string;

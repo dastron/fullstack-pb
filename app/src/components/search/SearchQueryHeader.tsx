@@ -1,19 +1,19 @@
 import { SettingsIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Flex,
-  Input,
-  Select,
   Button,
+  Flex,
   FormControl,
   FormLabel,
-  Switch,
+  Input,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
+  MenuList,
+  Select,
+  Switch,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const SearchQueryHeader = ({ filterOptions }: { filterOptions?: { label: string; value: string }[] }) => {

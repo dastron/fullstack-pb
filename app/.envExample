@@ -1,2 +1,0 @@
-VITE_FUNCTIONS_URL = 'http://localhost:8081'
-VITE_PB_URL = 'http://localhost:8080'

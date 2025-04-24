@@ -1,7 +1,7 @@
 import { Container } from "@chakra-ui/react";
-import "./App.css";
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
+import "./App.css";
 
 import NavMenu, { NAV_HEIGHT } from "./components/nav/AppMenu";
 import SpinnerPage from "./pages/app/SpinnerPage";

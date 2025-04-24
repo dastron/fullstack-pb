@@ -1,4 +1,4 @@
-import { Grid, GridItem, Card, Heading, Box, Text, Stack, useColorModeValue } from "@chakra-ui/react";
+import { Box, Card, Grid, GridItem, Heading, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 
 import LoginForm from "@/features/app/LoginForm";
 

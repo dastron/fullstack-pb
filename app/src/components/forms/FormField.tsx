@@ -1,4 +1,4 @@
-import { Text, Stack } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 
 export const Field = (props: {
   label: string;

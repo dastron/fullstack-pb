@@ -1,13 +1,13 @@
 import {
-  SimpleGrid,
+  Box,
+  Button,
   Card,
   CardBody,
   CardFooter,
   Image,
+  SimpleGrid,
   Stack,
   Text,
-  Button,
-  Box,
   useColorMode,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";

@@ -38,4 +38,29 @@ else
     echo "Starting server..."
 fi
 
+# Check if superuser credentials are provided and valid
+if [ -n "$PB_SUPERUSER_EMAIL" ] && [ -n "$PB_SUPERUSER_PASSWORD" ]; then
+    echo "Superuser credentials provided. Validating..."
+    # Basic email format validation
+    if echo "$PB_SUPERUSER_EMAIL" | grep -qE '^[^ ]+@[^ ]+\.[^ ]+$'; then
+        # Password length validation
+        if [ ${#PB_SUPERUSER_PASSWORD} -ge 10 ]; then
+            echo "Credentials valid. Attempting to create superuser..."
+            /pb/pocketbase superuser upsert "$PB_SUPERUSER_EMAIL" "$PB_SUPERUSER_PASSWORD"
+            # Check the exit status of the command
+            if [ $? -eq 0 ]; then
+                echo "Superuser created successfully or already exists."
+            else
+                echo "Failed to create superuser. Check PocketBase logs for details."
+            fi
+        else
+            echo "Password validation failed: Password must be at least 10 characters long."
+        fi
+    else
+        echo "Email validation failed: Invalid email format."
+    fi
+else
+    echo "Superuser credentials not provided or incomplete. Skipping superuser creation."
+fi
+
 exec "$@"

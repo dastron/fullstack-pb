@@ -1,6 +1,6 @@
 import { ChevronLeftIcon } from "@chakra-ui/icons";
-import { Text, Breadcrumb, BreadcrumbItem, BreadcrumbLink, HStack } from "@chakra-ui/react";
-import { Link as RouterLink, useParams, Outlet } from "react-router-dom";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, HStack, Text } from "@chakra-ui/react";
+import { Outlet, Link as RouterLink, useParams } from "react-router-dom";
 
 function ProjectAppNav() {
   const { projectId } = useParams();

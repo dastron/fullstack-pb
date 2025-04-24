@@ -1,10 +1,6 @@
 import { z } from "zod";
 import { StatusEnum } from "../enums";
-import {
-  baseImageFileSchema,
-  inputImageFileSchema,
-  omitImageFilesSchema,
-} from "./base";
+import { baseImageFileSchema, inputImageFileSchema, omitImageFilesSchema } from "./base";
 
 export const ProjectInputSchema = z
   .object({
@@ -18,5 +14,4 @@ export const ProjectInputSchema = z
     SubscriberUsers: z.array(z.string()),
   })
   .extend(inputImageFileSchema);
-export const ProjectSchema =
-  ProjectInputSchema.omit(omitImageFilesSchema).extend(baseImageFileSchema);
+export const ProjectSchema = ProjectInputSchema.omit(omitImageFilesSchema).extend(baseImageFileSchema);

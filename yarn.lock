@@ -961,6 +961,7 @@ __metadata:
     happy-dom: "npm:^17.4.4"
     pocketbase: "npm:^0.26.0"
     prettier: "npm:^3.5.3"
+    prettier-plugin-organize-imports: "npm:^4.1.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-hook-form: "npm:^7.56.1"
@@ -985,7 +986,6 @@ __metadata:
     "@types/express": "npm:^5.0.1"
     "@types/node": "npm:^22.14.1"
     cors: "npm:^2.8.5"
-    dotenv: "npm:^16.5.0"
     eslint: "npm:^9.25.1"
     eslint-config-prettier: "npm:^10.1.2"
     eslint-plugin-import: "npm:^2.31.0"
@@ -995,6 +995,7 @@ __metadata:
     openai: "npm:^4.95.1"
     pocketbase: "npm:^0.26.0"
     prettier: "npm:^3.5.3"
+    prettier-plugin-organize-imports: "npm:^4.1.0"
     tsx: "npm:^4.19.3"
     typescript: "npm:^5.8.3"
     typescript-eslint: "npm:^8.31.0"
@@ -2847,13 +2848,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.5.0":
-  version: 16.5.0
-  resolution: "dotenv@npm:16.5.0"
-  checksum: 10c0/5bc94c919fbd955bf0ba44d33922a1e93d1078e64a1db5c30faeded1d996e7a83c55332cb8ea4fae5a9ca4d0be44cbceb95c5811e70f9f095298df09d1997dd9
-  languageName: node
-  linkType: hard
-
 "dunder-proto@npm:^1.0.0, dunder-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "dunder-proto@npm:1.0.1"
@@ -3706,6 +3700,8 @@ __metadata:
   dependencies:
     concurrently: "npm:^9.1.2"
     prettier: "npm:^3.5.3"
+    prettier-plugin-organize-imports: "npm:^4.1.0"
+    typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -5307,6 +5303,20 @@ __metadata:
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
   checksum: 10c0/b00d617431e7886c520a6f498a2e14c75ec58f6d93ba48c3b639cf241b54232d90daa05d83a9e9b9fef6baa63cb7e1e4602c2372fea5bc169668401eb127d0cd
+  languageName: node
+  linkType: hard
+
+"prettier-plugin-organize-imports@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "prettier-plugin-organize-imports@npm:4.1.0"
+  peerDependencies:
+    prettier: ">=2.0"
+    typescript: ">=2.9"
+    vue-tsc: ^2.1.0
+  peerDependenciesMeta:
+    vue-tsc:
+      optional: true
+  checksum: 10c0/fb2d6d415bac96b65a77ea7de9f708e8613436aeb9d82bbe63edeb312fd1362c0d3c57319bd4cc4adfc8b9964fb6c205cbbf8efd9546931b0f9874c0ae624a6a
   languageName: node
   linkType: hard
 

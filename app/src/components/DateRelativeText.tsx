@@ -1,4 +1,4 @@
-import { useMemo, memo } from "react";
+import { memo, useMemo } from "react";
 
 interface DateRelativeTextProps {
   date: string | Date;

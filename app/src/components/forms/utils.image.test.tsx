@@ -1,5 +1,5 @@
-import { screen, fireEvent } from "@testing-library/react";
-import { expect, describe, it, vi } from "vitest";
+import { fireEvent, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 export const imageUpload = {
   /**

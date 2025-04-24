@@ -1,6 +1,6 @@
-import { BaseMutator, MutatorOptions } from "./baseMutator";
-import { UserInputType, UserType, TypedPocketBase } from "../types";
 import { UserInputSchema } from "../schema";
+import { UserInputType, UserType } from "../types";
+import { BaseMutator, MutatorOptions } from "./baseMutator";
 
 export class UserMutator extends BaseMutator<UserType, UserInputType> {
   protected setDefaults(): MutatorOptions {

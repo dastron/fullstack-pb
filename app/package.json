@@ -43,6 +43,7 @@
     "globals": "^16.0.0",
     "happy-dom": "^17.4.4",
     "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "terser": "^5.39.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.31.0",

@@ -13,9 +13,11 @@
     "setup:build": "yarn build",
     "build": "yarn workspaces foreach --all --topological run build",
     "pb": "./pocket_base/pocketbase serve --http=\"0.0.0.0:8080\" --hooksDir ./pb/pb_hooks",
-    "pb:snapshot": "./pocket_base/pocketbase migrate collections",
+    "pb:sync": "yarn pb:migrate",
+    "pb:migrate": "chmod +x ./pb-migrate.sh && ./pb-migrate.sh",
+    "pb:snapshot": "echo 'y' | ./pocket_base/pocketbase migrate collections",
     "dev": "concurrently \"yarn workspace @project/shared dev\" \"yarn workspace @project/app dev\" \"yarn workspace @project/functions dev\" \"./pocket_base/pocketbase serve --http=\\\"0.0.0.0:8080\\\" --hooksDir ./pb/pb_hooks\"",
-    "staging": "docker run --rm -it --env-file \".dockerEnv\" -p 8081:8081 -p 8000:80 -p 8080:8080 $(docker build -q .)",
+    "staging": "echo 'building...' && docker run --rm -it --env-file \".dockerEnv\" -p 7081:8081 -p 7001:80 -p 7080:8080 $(docker build -q .)",
     "check": "yarn format && yarn lint && yarn typecheck",
     "format": "yarn workspaces foreach --all run format",
     "lint": "yarn workspaces foreach --all run lint",
@@ -24,7 +26,6 @@
     "clean": "yarn workspaces foreach --all run clean",
     "test:all": "yarn workspaces foreach --all run test",
     "outdated": "yarn workspaces foreach -pR run npm outdated",
-    "update-deps": "yarn up -R '*'",
     "focus": "yarn workspaces focus",
     "why": "yarn why"
   },
@@ -32,7 +33,9 @@
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^9.1.2",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "typescript": "^5.8.3"
   },
   "packageManager": "yarn@4.8.1"
 }

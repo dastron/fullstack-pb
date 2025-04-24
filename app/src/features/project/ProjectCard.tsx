@@ -1,6 +1,6 @@
 import type { ProjectType } from "@project/shared/types";
 
-import { Card, CardHeader, CardBody, Stack, Heading, Text, HStack } from "@chakra-ui/react";
+import { Card, CardBody, CardHeader, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 import { ImageViewer } from "@/components/images/ImageViewer";

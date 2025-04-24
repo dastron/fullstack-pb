@@ -1,16 +1,16 @@
 import { SettingsIcon } from "@chakra-ui/icons";
 import {
-  Flex,
   Box,
+  Flex,
+  HStack,
+  Icon,
+  IconButton,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem,
-  HStack,
-  Text,
-  Icon,
   MenuGroup,
-  IconButton,
+  MenuItem,
+  MenuList,
+  Text,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 

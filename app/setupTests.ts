@@ -1,11 +1,12 @@
-import { afterEach, vi } from "vitest";
-import { cleanup } from "@testing-library/react";
 import type {
   ProjectInputType,
   ProjectType,
   UserInputType,
   UserType,
-} from "@project/shared/schema";
+} from "@project/shared/types";
+
+import { afterEach, vi } from "vitest";
+import { cleanup } from "@testing-library/react";
 
 interface CollectionConfig<I, T> {
   input: I;

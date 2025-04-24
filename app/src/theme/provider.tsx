@@ -1,6 +1,13 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { IconButton, ColorModeScript, extendTheme, useColorMode, MenuItem, Box } from "@chakra-ui/react";
-import { ChakraProvider } from "@chakra-ui/react";
+import {
+  Box,
+  ChakraProvider,
+  ColorModeScript,
+  extendTheme,
+  IconButton,
+  MenuItem,
+  useColorMode,
+} from "@chakra-ui/react";
 
 const colors = {
   primary: {

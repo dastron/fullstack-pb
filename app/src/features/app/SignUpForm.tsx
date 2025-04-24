@@ -1,6 +1,6 @@
 import type { UserInputType } from "@project/shared/types";
 
-import { Stack, Input, Button } from "@chakra-ui/react";
+import { Button, Input, Stack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserInputSchema } from "@project/shared/schema";
 import { FormProvider, useForm } from "react-hook-form";

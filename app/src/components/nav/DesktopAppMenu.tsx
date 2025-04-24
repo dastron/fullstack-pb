@@ -1,5 +1,5 @@
 import { HamburgerIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Box, Menu, MenuButton, MenuList, MenuItem, HStack, Text, Icon } from "@chakra-ui/react";
+import { Box, HStack, Icon, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 import useAuth from "@/hooks/useAuth";

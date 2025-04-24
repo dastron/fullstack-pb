@@ -1,4 +1,4 @@
-import { Stack, Heading, Box } from "@chakra-ui/react";
+import { Box, Heading, Stack } from "@chakra-ui/react";
 
 import { ColorModeToggle } from "@/theme/provider";
 

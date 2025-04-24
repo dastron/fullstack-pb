@@ -1,6 +1,6 @@
-import { BaseMutator, MutatorOptions } from "./baseMutator";
-import { ProjectInputType, ProjectType, TypedPocketBase } from "../types";
 import { ProjectInputSchema } from "../schema";
+import { ProjectInputType, ProjectType } from "../types";
+import { BaseMutator, MutatorOptions } from "./baseMutator";
 
 export class ProjectMutator extends BaseMutator<ProjectType, ProjectInputType> {
   protected setDefaults(): MutatorOptions {

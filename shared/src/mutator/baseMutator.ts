@@ -1,11 +1,5 @@
+import { ListResult, RecordListOptions, RecordModel, RecordOptions, RecordService } from "pocketbase";
 import { TypedPocketBase } from "../types";
-import {
-  ListResult,
-  RecordModel,
-  RecordOptions,
-  RecordListOptions,
-  RecordService,
-} from "pocketbase";
 
 export interface MutatorOptions {
   expand: string[];
@@ -131,11 +125,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
   /**
    * Get first entity by filter
    */
-  async getFirstByFilter(
-    filter: string | string[],
-    expand?: string | string[],
-    sort?: string,
-  ): Promise<T | null> {
+  async getFirstByFilter(filter: string | string[], expand?: string | string[], sort?: string): Promise<T | null> {
     try {
       const record = await this.entityGetFirstByFilter(filter, expand, sort);
       return await this.processRecord(record);
@@ -152,16 +142,10 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     perPage = 100,
     filter?: string | string[],
     sort?: string,
-    expand?: string | string[],
+    expand?: string | string[]
   ): Promise<ListResult<T>> {
     try {
-      const result = await this.entityGetList(
-        page,
-        perPage,
-        filter,
-        sort,
-        expand,
-      );
+      const result = await this.entityGetList(page, perPage, filter, sort, expand);
       return await this.processListResult(result);
     } catch (error) {
       return this.errorWrapper(error);
@@ -191,13 +175,9 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
    * Process a list result before returning it
    * Can be overridden to handle special cases like mapped entities
    */
-  protected async processListResult(
-    result: ListResult<T>,
-  ): Promise<ListResult<T>> {
+  protected async processListResult(result: ListResult<T>): Promise<ListResult<T>> {
     // Process each item in the list
-    const processedItems = await Promise.all(
-      result.items.map((item) => this.processRecord(item)),
-    );
+    const processedItems = await Promise.all(result.items.map((item) => this.processRecord(item)));
 
     return {
       ...result,
@@ -221,9 +201,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     if (expand) {
       // If expand is a string, split it and add the parts
       if (typeof expand === "string") {
-        expandArray = expandArray.concat(
-          expand.split(",").map((e) => e.trim()),
-        );
+        expandArray = expandArray.concat(expand.split(",").map((e) => e.trim()));
       }
       // If expand is already an array, concatenate
       else {
@@ -232,9 +210,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     }
 
     // Filter out duplicates, empty strings, and undefined values
-    const uniqueExpands = [...new Set(expandArray)].filter(
-      (e) => e !== "" && e !== undefined,
-    );
+    const uniqueExpands = [...new Set(expandArray)].filter((e) => e !== "" && e !== undefined);
 
     // If no valid expands, return undefined
     if (!uniqueExpands.length) {
@@ -294,9 +270,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     // If no explicit sort but we have defaults
     if (this.options.sort.length) {
       // Filter out empty and undefined values
-      const validSorts = this.options.sort.filter(
-        (s) => s !== "" && s !== undefined,
-      );
+      const validSorts = this.options.sort.filter((s) => s !== "" && s !== undefined);
 
       // If we have valid sort items after filtering
       if (validSorts.length) {
@@ -325,10 +299,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
   /**
    * Perform the actual getById operation
    */
-  protected async entityGetById(
-    id: string,
-    expand?: string | string[],
-  ): Promise<T> {
+  protected async entityGetById(id: string, expand?: string | string[]): Promise<T> {
     const finalExpand = this.prepareExpand(expand);
     const options: RecordOptions = finalExpand ? { expand: finalExpand } : {};
     return await this.getCollection().getOne(id, options);
@@ -340,7 +311,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
   protected async entityGetFirstByFilter(
     filter: string | string[],
     expand?: string | string[],
-    sort?: string,
+    sort?: string
   ): Promise<T> {
     const finalFilter = this.prepareFilter(filter);
     const finalExpand = this.prepareExpand(expand);
@@ -350,10 +321,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     if (finalExpand) options.expand = finalExpand;
     if (finalSort) options.sort = finalSort;
 
-    return await this.getCollection().getFirstListItem(
-      finalFilter || "",
-      options,
-    );
+    return await this.getCollection().getFirstListItem(finalFilter || "", options);
   }
 
   /**
@@ -365,7 +333,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     perPage: number,
     filter?: string | string[],
     sort?: string,
-    expand?: string | string[],
+    expand?: string | string[]
   ): Promise<ListResult<T>> {
     const finalFilter = this.prepareFilter(filter);
     const finalExpand = this.prepareExpand(expand);
@@ -399,7 +367,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
       allowNotFound?: boolean;
       returnValue?: R;
       logError?: boolean;
-    } = { logError: true },
+    } = { logError: true }
   ): R {
     const { allowNotFound = false, returnValue, logError = true } = options;
 
@@ -427,9 +395,7 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
    */
   protected isNotFoundError(error: any): boolean {
     return (
-      error instanceof Error &&
-      (error.message.includes("404") ||
-        error.message.toLowerCase().includes("not found"))
+      error instanceof Error && (error.message.includes("404") || error.message.toLowerCase().includes("not found"))
     );
   }
 

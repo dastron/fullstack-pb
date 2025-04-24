@@ -1,12 +1,8 @@
-import { z } from "zod";
-import PocketBase from "pocketbase";
 import type { RecordService } from "pocketbase";
-import {
-  ProjectInputSchema,
-  ProjectSchema,
-  UserInputSchema,
-  UserSchema,
-} from "./schema";
+
+import PocketBase from "pocketbase";
+import { z } from "zod";
+import { ProjectInputSchema, ProjectSchema, UserInputSchema, UserSchema } from "./schema";
 // Projects
 export type ProjectInputType = z.infer<typeof ProjectInputSchema>;
 export type ProjectType = z.infer<typeof ProjectSchema>;

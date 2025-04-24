@@ -1,6 +1,6 @@
 import type { ProjectInputType, ProjectType } from "@project/shared/types";
 
-import { Stack, Input, Button, Textarea, Select } from "@chakra-ui/react";
+import { Button, Input, Select, Stack, Textarea } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StatusEnum } from "@project/shared/enums";
 import { ProjectInputSchema } from "@project/shared/schema";

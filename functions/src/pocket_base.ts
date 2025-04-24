@@ -56,10 +56,7 @@ export const loadAdminPocketBase = async () => {
 
   await pb
     .collection("_superusers")
-    .authWithPassword(
-      process.env.PB_SUPERUSER_EMAIL,
-      process.env.PB_SUPERUSER_PASSWORD,
-    );
+    .authWithPassword(process.env.PB_SUPERUSER_EMAIL, process.env.PB_SUPERUSER_PASSWORD);
 
   return pb as TypedPocketBase;
 };
