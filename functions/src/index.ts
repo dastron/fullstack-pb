@@ -4,8 +4,6 @@ import express, { Request, Response } from "express";
 import { processContentModeration } from "./moderator.js";
 import { validateToken } from "./pocket_base.js";
 
-console.log(process.env?.OPENAI_API_KEY || "NO ENV");
-
 const app = express();
 const PORT = process.env.FUNCTIONS_PORT || 8081;
 
