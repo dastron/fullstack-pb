@@ -1,4 +1,4 @@
-import { ListResult, RecordListOptions, RecordModel, RecordOptions, RecordService } from "pocketbase";
+import { ListResult, RecordListOptions, RecordModel, RecordOptions, RecordService, RecordSubscription, RecordSubscribeOptions, UnsubscribeFunc } from "pocketbase";
 import { TypedPocketBase } from "../types";
 
 export interface MutatorOptions {
@@ -412,4 +412,60 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
    * Should be implemented by child classes
    */
   protected abstract validateInput(input: InputType): Promise<InputType>;
+
+  /**
+   * Subscribe to changes on a specific record
+   * @param id The ID of the record to subscribe to
+   * @param callback Function to call when changes occur
+   * @param expand Optional expand parameters
+   * @returns Promise that resolves to an unsubscribe function
+   */
+  async subscribeToRecord(
+    id: string,
+    callback: (data: RecordSubscription<T>) => void,
+    expand?: string | string[]
+  ): Promise<UnsubscribeFunc> {
+    const finalExpand = this.prepareExpand(expand);
+    const options: RecordSubscribeOptions = finalExpand ? { expand: finalExpand } : {};
+    
+    return this.getCollection().subscribe(id, callback, options);
+  }
+
+  /**
+   * Subscribe to changes on the entire collection
+   * @param callback Function to call when changes occur
+   * @param expand Optional expand parameters
+   * @returns Promise that resolves to an unsubscribe function
+   */
+  async subscribeToCollection(
+    callback: (data: RecordSubscription<T>) => void,
+    expand?: string | string[]
+  ): Promise<UnsubscribeFunc> {
+    const finalExpand = this.prepareExpand(expand);
+    const options: RecordSubscribeOptions = finalExpand ? { expand: finalExpand } : {};
+    
+    return this.getCollection().subscribe("*", callback, options);
+  }
+
+  /**
+   * Unsubscribe from a specific record's changes
+   * @param id The ID of the record to unsubscribe from
+   */
+  unsubscribeFromRecord(id: string): void {
+    this.getCollection().unsubscribe(id);
+  }
+
+  /**
+   * Unsubscribe from collection-wide changes
+   */
+  unsubscribeFromCollection(): void {
+    this.getCollection().unsubscribe("*");
+  }
+
+  /**
+   * Unsubscribe from all subscriptions in this collection
+   */
+  unsubscribeAll(): void {
+    this.getCollection().unsubscribe();
+  }
 }

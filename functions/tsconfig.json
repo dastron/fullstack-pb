@@ -8,7 +8,8 @@
     "esModuleInterop": true,        // For compatibility
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vitest/globals"]
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "src/pb.ts", "src/index.ts"]

@@ -37,11 +37,17 @@ export const CardPattern = ({ data, columns, prefix }: { data: any[]; columns: s
 
   return (
     <Box display="flex" justifyContent="center" width="100%">
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} maxWidth="1200px">
+      <SimpleGrid
+        columns={{ base: 1, md: 2, lg: 3 }}
+        spacing={6}
+        maxWidth="1200px"
+        width="100%"
+        gridAutoFlow="row dense"
+      >
         {data.map((item) => (
-          <Box key={item.id}>
-            <Link to={`${prefixPath}${item.id}`}>
-              <Card maxW="sm" borderWidth="1px" borderColor="gray.200" boxShadow="sm">
+          <Box key={item.id} width="100%">
+            <Link to={`${prefixPath}${item.id}`} style={{ display: "block", width: "100%" }}>
+              <Card maxW="100%" borderWidth="1px" borderColor="gray.200" boxShadow="sm">
                 <Box position="relative">
                   <Image
                     src={buildThumbnailURL(item.id, item)}
