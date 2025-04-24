@@ -1,5 +1,5 @@
-import React from "react";
 import { Spinner, Center } from "@chakra-ui/react";
+import React from "react";
 
 const SpinnerPage: React.FC = () => {
   return (

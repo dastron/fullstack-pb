@@ -1,3 +1,4 @@
+import { SettingsIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -12,9 +13,8 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
-import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { SettingsIcon } from "@chakra-ui/icons";
+import { useSearchParams } from "react-router-dom";
 
 const SearchQueryHeader = ({ filterOptions }: { filterOptions?: { label: string; value: string }[] }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -41,7 +41,7 @@ const SearchQueryHeader = ({ filterOptions }: { filterOptions?: { label: string;
   const handleStatusChange = (value: string) => {
     const current = Object.fromEntries(searchParams.entries());
     if (value === "all") {
-      const { status, ...rest } = current;
+      const { status: _, ...rest } = current;
       setSearchParams(rest);
     } else {
       setSearchParams({
@@ -54,7 +54,7 @@ const SearchQueryHeader = ({ filterOptions }: { filterOptions?: { label: string;
   const handleSortChange = (value: string) => {
     const current = Object.fromEntries(searchParams.entries());
     if (value === "-updated") {
-      const { sortBy, ...rest } = current;
+      const { sortBy: _, ...rest } = current;
       setSearchParams(rest);
     } else {
       setSearchParams({

@@ -1,11 +1,10 @@
+import { Icon } from "@chakra-ui/icons";
 import { MenuItem, HStack, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { IconType } from "react-icons";
-import { Icon } from "@chakra-ui/icons";
 
 interface NavMenuItemProps {
   to: string;
-  icon: IconType | typeof Icon;
+  icon: typeof Icon;
   text: string;
 }
 

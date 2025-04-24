@@ -1,11 +1,12 @@
 import pb from "@/pb";
 
+const FUNCTIONS_URL = import.meta.env?.VITE_FUNCTIONS_URL ?? "";
+
 export const moderateObject = async (userId: string | undefined, target: string, object: object) => {
   const string = JSON.stringify(object);
-
   const token = pb.authStore?.token ?? "";
 
-  const results = await fetch((import.meta.env?.VITE_FUNCTIONS_URL ?? "") + "/functions/moderator", {
+  const results = await fetch(FUNCTIONS_URL + "/functions/moderator", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,6 +1,8 @@
 import type { UserInputType, UserType } from "@project/shared/types";
-import pb from "@/pb";
+
 import { useState, useEffect, useCallback } from "react";
+
+import pb from "@/pb";
 
 const useAuth = () => {
   const [user, setUser] = useState<UserType | null>(pb.authStore.model as UserType | null);

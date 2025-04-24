@@ -8,10 +8,6 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
     "./schema": {
       "import": "./dist/schema.js",
       "types": "./dist/schema.d.ts"
@@ -46,7 +42,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "pocketbase": "^0.25.2",
+    "pocketbase": "^0.26.0",
     "zod": "^3.24.3"
   }
 }

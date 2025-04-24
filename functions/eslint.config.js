@@ -1,30 +1,27 @@
 import js from "@eslint/js";
 import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import eslintPluginImport from "eslint-plugin-import";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default tseslint.config(
-  { ignores: ["dist", "setupTests.ts"] },
+  { ignores: ["dist"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, eslintConfigPrettier],
-    files: ["**/*.{ts,tsx}"],
+    files: ["src/**/*.{ts,js}"], // Apply to TS and JS files in src
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      ecmaVersion: 2022, // Use a recent ECMAScript version suitable for Node.js
+      sourceType: "module", // Since package.json specifies "type": "module"
+      globals: {
+        ...globals.node, // Use Node.js globals
+      },
     },
     plugins: {
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
       import: eslintPluginImport,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-      "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-explicit-any": "off",
       "import/newline-after-import": "error",
       "import/order": [
         "error",
@@ -35,6 +32,5 @@ export default tseslint.config(
         },
       ],
     },
-    
   }
-);
+); 

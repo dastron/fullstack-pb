@@ -1,6 +1,8 @@
 import { Flex } from "@chakra-ui/react";
-import MobileAppMenu from "./MobileAppMenu";
+
 import DesktopAppMenu from "./DesktopAppMenu";
+import MobileAppMenu from "./MobileAppMenu";
+
 export const NAV_HEIGHT = "3.5rem";
 
 const NavMenu = () => {

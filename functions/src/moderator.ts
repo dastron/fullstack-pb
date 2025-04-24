@@ -1,5 +1,6 @@
-import OpenAI from "openai";
 import type { ModerationMultiModalInput } from "openai/resources/moderations.mjs";
+
+import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

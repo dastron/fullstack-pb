@@ -1,4 +1,5 @@
-// import { UserType } from "@/types";
+import type { UserType } from "@project/shared/types";
+
 import {
   Card,
   CardHeader,
@@ -13,7 +14,6 @@ import {
   Badge,
   Avatar,
 } from "@chakra-ui/react";
-import type { UserType } from "@project/shared/types";
 
 interface UserProfileCardProps {
   user: UserType;

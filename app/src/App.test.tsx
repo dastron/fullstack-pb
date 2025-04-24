@@ -1,7 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { MemoryRouter } from "react-router-dom";
-import App from "./App";
 import { render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { describe, it, expect } from "vitest";
+
+import App from "./App";
 
 const future = { v7_startTransition: false, v7_relativeSplatPath: false };
 

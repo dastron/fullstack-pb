@@ -1,8 +1,11 @@
+import { LinkIcon } from "@chakra-ui/icons";
 import { Table, Text, Thead, Tr, Th, Tbody, Td, Button, Box, IconButton, Image } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
+
 import DateRelativeText from "./DateRelativeText";
-import { LinkIcon } from "@chakra-ui/icons";
+
 import pb from "@/pb";
+
 export const TablePattern = ({
   data,
   columns,

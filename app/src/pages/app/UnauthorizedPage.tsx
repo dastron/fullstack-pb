@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Container,
@@ -6,14 +5,13 @@ import {
   Text,
   Stack,
   VStack,
-  Icon,
   Button,
   useColorModeValue,
   Alert,
   AlertIcon,
   AlertTitle,
 } from "@chakra-ui/react";
-import { MdPersonAdd, MdLogin } from "react-icons/md";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const UnauthorizedPage: React.FC = () => {
@@ -70,24 +68,10 @@ const UnauthorizedPage: React.FC = () => {
             </Text>
 
             <Stack direction={{ base: "column", md: "row" }} spacing={4} w="full" pt={4}>
-              <Button
-                as={Link}
-                to={`/signup?redirect=${redirectUrl}`}
-                colorScheme="blue"
-                size="lg"
-                w="full"
-                leftIcon={<Icon as={MdPersonAdd} />}
-              >
+              <Button as={Link} to={`/signup?redirect=${redirectUrl}`} colorScheme="blue" size="lg" w="full">
                 Sign Up
               </Button>
-              <Button
-                as={Link}
-                to={`/login?redirect=${redirectUrl}`}
-                colorScheme="green"
-                size="lg"
-                w="full"
-                leftIcon={<Icon as={MdLogin} />}
-              >
+              <Button as={Link} to={`/login?redirect=${redirectUrl}`} colorScheme="green" size="lg" w="full">
                 Log In
               </Button>
             </Stack>

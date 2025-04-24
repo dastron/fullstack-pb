@@ -15,7 +15,6 @@ yarn setup
 ```
 
 ### Install Dependencies
-
 Install dependencies for all workspaces:
 
 ```bash

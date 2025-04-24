@@ -1,14 +1,17 @@
+import type { ProjectInputType, ProjectType } from "@project/shared/types";
+
 import { Stack, Input, Button, Textarea, Select } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import Field from "@/components/FormField";
-import { ProjectInputSchema } from "@project/shared/schema";
 import { StatusEnum } from "@project/shared/enums";
+import { ProjectInputSchema } from "@project/shared/schema";
+import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import type { ProjectInputType, ProjectType } from "@project/shared/types";
-import useAuth from "@/hooks/useAuth";
-import ImageUploadInput from "@/components/forms/ImageUploadSingle";
+
 import { createProject } from "./project";
+
+import Field from "@/components/forms/FormField";
+import ImageUploadInput from "@/components/forms/ImageUploadInput";
+import useAuth from "@/hooks/useAuth";
 
 type ProjectCreationFormProps = {
   redirect?: boolean;

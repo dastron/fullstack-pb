@@ -15,13 +15,3 @@
   display: flex;
   place-items: center;
 }
-
-.card {
-  padding: 2em;
-}
-
-.deep-chat {
-  border-radius: 10px;
-  border: unset;
-  background-color: #292929;
-}

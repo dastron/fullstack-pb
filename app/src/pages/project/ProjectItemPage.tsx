@@ -1,8 +1,10 @@
-import ProjectCard from "@/features/project/ProjectCard";
-import pb from "@/pb";
 import type { ProjectType } from "@project/shared/types";
+
 import { Heading, Stack } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
+
+import ProjectCard from "@/features/project/ProjectCard";
+import pb from "@/pb";
 
 type URLParams = {
   params: {
@@ -11,9 +13,7 @@ type URLParams = {
 };
 
 export const ProjectItemQuery = async ({ params }: URLParams) => {
-  const project = await pb.collection("Projects").getOne(params?.projectId ?? "", {
-    expand: "ProjectReviews_via_Project, Observations_via_Project",
-  });
+  const project = await pb.collection("Projects").getOne(params?.projectId ?? "", {});
   return project;
 };
 

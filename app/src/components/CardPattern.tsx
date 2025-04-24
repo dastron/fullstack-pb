@@ -11,7 +11,9 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+
 import DateRelativeText from "./DateRelativeText";
+
 import pb from "@/pb";
 
 export const CardPattern = ({ data, columns, prefix }: { data: any[]; columns: string[]; prefix?: string }) => {

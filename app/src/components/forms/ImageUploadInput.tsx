@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -10,7 +10,7 @@ import {
   Card,
   CardBody,
 } from "@chakra-ui/react";
-import { CloseIcon } from "@chakra-ui/icons";
+import React, { useState, useRef, useEffect } from "react";
 
 interface ImageUploadInputProps {
   name: string;
@@ -136,8 +136,6 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ name, value = undef
                     top="2px"
                     right="2px"
                     onClick={() => handleDelete(index)}
-                    bg="whiteAlpha.800"
-                    _hover={{ bg: "whiteAlpha.900" }}
                     borderRadius="full"
                     data-testid={`image-delete-button-${index}`}
                   />

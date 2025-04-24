@@ -1,11 +1,9 @@
-import useAuth from "@/hooks/useAuth";
-import { Box, Menu, MenuButton, MenuList, MenuItem, HStack, Text, Icon, Button } from "@chakra-ui/react";
-import { HiOutlineUser } from "react-icons/hi2";
+import { HamburgerIcon, SettingsIcon } from "@chakra-ui/icons";
+import { Box, Menu, MenuButton, MenuList, MenuItem, HStack, Text, Icon } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { MoonIcon, SettingsIcon } from "@chakra-ui/icons";
-import NavMenuItem from "./NavMenuItem";
-import { MdLogout, MdPerson } from "react-icons/md";
-import { HiOutlineUserAdd } from "react-icons/hi";
+
+import useAuth from "@/hooks/useAuth";
+
 export const NAV_HEIGHT = "3.5rem";
 
 const DesktopAppMenu = () => {
@@ -18,37 +16,21 @@ const DesktopAppMenu = () => {
           <Link to="/">
             <HStack p={4}>
               <Box borderRadius="md" as="img" src="/logo.svg" h="40px" alt="Logo" />
-              <Text>Template</Text>
+              <Text>FullstackTemplate</Text>
             </HStack>
           </Link>
           <Menu>
-            <MenuButton
-              height="100%"
-              borderRadius={0}
-              borderRight="1px"
-              borderBottom="0"
-              borderColor="gray.200"
-              _dark={{ borderColor: "gray.700" }}
-              px={4}
-            >
-              Projects
-            </MenuButton>
-            <MenuList>
-              <NavMenuItem to="/project" icon={MoonIcon} text="Explore Projects" />
-            </MenuList>
+            <Link to="/project">
+              <MenuButton height="100%" borderRadius={0} borderColor="gray.200" px={4}>
+                Projects
+              </MenuButton>
+            </Link>
           </Menu>
         </HStack>
         <HStack h="100%">
           <Menu>
-            <MenuButton
-              as={Button}
-              leftIcon={<HiOutlineUser />}
-              variant="ghost"
-              height="100%"
-              size="xl"
-              borderRadius={0}
-              px={4}
-            >
+            <MenuButton height="100%" borderRadius={0} px={4}>
+              <Icon mr={2} as={HamburgerIcon} />
               Menu
             </MenuButton>
             <MenuList>
@@ -61,31 +43,19 @@ const DesktopAppMenu = () => {
               {user == null || user?.email == null || user?.email === "" ? (
                 <>
                   <Link to="/login">
-                    <MenuItem>
-                      <Icon mr={2} as={HiOutlineUser} />
-                      Login
-                    </MenuItem>
+                    <MenuItem>Login</MenuItem>
                   </Link>
                   <Link to="/signup">
-                    <MenuItem>
-                      <Icon mr={2} as={HiOutlineUserAdd} />
-                      Sign up
-                    </MenuItem>
+                    <MenuItem>Sign up</MenuItem>
                   </Link>
                 </>
               ) : (
                 <>
                   <Link to="/profile">
-                    <MenuItem>
-                      <Icon mr={2} as={MdPerson} />
-                      Profile
-                    </MenuItem>
+                    <MenuItem>Profile</MenuItem>
                   </Link>
                   <Link to="/" onClick={() => Logout()}>
-                    <MenuItem>
-                      <Icon mr={2} as={MdLogout} />
-                      Logout
-                    </MenuItem>
+                    <MenuItem>Logout</MenuItem>
                   </Link>
                 </>
               )}

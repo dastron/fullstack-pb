@@ -1,6 +1,6 @@
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, HStack, Text } from "@chakra-ui/react";
 import { Outlet, Link as RouterLink } from "react-router-dom";
-import { ChevronRightIcon } from "@chakra-ui/icons";
 
 export default function SettingsAppNav() {
   return (

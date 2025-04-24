@@ -1,30 +1,40 @@
+import { SettingsIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { Box, Container, Heading, Text, SimpleGrid, VStack, Button, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
-import { Box, Container, Heading, Text, SimpleGrid, Icon, VStack, Button, useColorModeValue } from "@chakra-ui/react";
-import { FaSolarPanel, FaWifi, FaLeaf } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const HeroSection: React.FC = () => {
   const bgColor = useColorModeValue("white", "gray.800");
+  const headingColor = useColorModeValue("brand.800", "brand.700");
+  const textColor = useColorModeValue("gray.700", "gray.200");
 
   return (
     <Box bg={bgColor}>
       <Container maxW="container.xl" py={10}>
         {/* Hero Section */}
         <VStack spacing={6} textAlign="center" mb={12}>
-          <Heading size="2xl">Empowering Communities Through Sustainable Development</Heading>
-          <Text fontSize="xl" color="secondary" maxW="800px">
-            Connect with experts and fund meaningful projects that bring environmental, power, and internet solutions to
-            remote communities worldwide.
+          <Heading size="2xl" color={headingColor}>
+            Build Powerful Web Applications Faster
+          </Heading>
+          <Text fontSize="xl" color={textColor} maxW="800px">
+            A complete fullstack solution with Pocketbase backend, React frontend, and everything you need to launch
+            your next project.
           </Text>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4} width="100%" maxW="800px">
-            <Button as={Link} to="/enroll" colorScheme="green" size="lg">
-              Get Started
+            <Button
+              as={Link}
+              to="https://github.com/dastron/fullstack-pb"
+              target="_blank"
+              colorScheme="primary"
+              size="lg"
+            >
+              View Source Code
             </Button>
-            <Button as={Link} to="/project" colorScheme="green" size="lg">
-              Explore Projects
+            <Button as={Link} to="/project" colorScheme="primary" size="lg">
+              Demo Project
             </Button>
-            <Button as={Link} to="/task/dashboard" colorScheme="green" size="lg">
-              Earn Token
+            <Button as={Link} to="https://pocketbase.io/docs/" target="_blank" colorScheme="primary" size="lg">
+              Pocketbase Docs
             </Button>
           </SimpleGrid>
         </VStack>
@@ -32,19 +42,19 @@ const HeroSection: React.FC = () => {
         {/* Features Grid */}
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mt={10}>
           <FeatureCard
-            icon={FaLeaf}
-            title="Environmental Projects"
-            description="Support initiatives that protect and restore local environments in remote communities."
+            icon={SettingsIcon}
+            title="Powerful Backend"
+            description="Built on Pocketbase with authentication, real-time database, and file storage out of the box."
           />
           <FeatureCard
-            icon={FaSolarPanel}
-            title="Power Solutions"
-            description="Fund sustainable energy projects bringing electricity to underserved areas."
+            icon={MoonIcon}
+            title="User Management"
+            description="Complete user authentication and profile management system ready to use."
           />
           <FeatureCard
-            icon={FaWifi}
-            title="Internet Access"
-            description="Help bridge the digital divide by connecting remote communities to the internet."
+            icon={SunIcon}
+            title="Responsive Design"
+            description="Beautiful UI components that work seamlessly across desktop and mobile devices."
           />
         </SimpleGrid>
       </Container>
@@ -60,12 +70,26 @@ interface FeatureCardProps {
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
   const cardBg = useColorModeValue("white", "gray.700");
+  const titleColor = useColorModeValue("brand.800", "brand.700");
+  const textColor = useColorModeValue("gray.700", "gray.200");
+  const cardBorder = useColorModeValue("brand.50", "transparent");
 
   return (
-    <VStack bg={cardBg} p={6} borderRadius="lg" boxShadow="md" spacing={4} align="center">
-      <Icon as={icon} w={10} h={10} color="green.500" />
-      <Heading size="md">{title}</Heading>
-      <Text textAlign="center" color="secondary">
+    <VStack
+      bg={cardBg}
+      p={6}
+      borderRadius="lg"
+      boxShadow="md"
+      spacing={4}
+      align="center"
+      border="1px"
+      borderColor={cardBorder}
+    >
+      <Box as={icon} w={10} h={10} color="brand.700" />
+      <Heading size="md" color={titleColor}>
+        {title}
+      </Heading>
+      <Text textAlign="center" color={textColor}>
         {description}
       </Text>
     </VStack>

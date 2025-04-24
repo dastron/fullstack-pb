@@ -1,4 +1,4 @@
-import useAuth from "@/hooks/useAuth";
+import { SettingsIcon } from "@chakra-ui/icons";
 import {
   Flex,
   Box,
@@ -12,10 +12,9 @@ import {
   MenuGroup,
   IconButton,
 } from "@chakra-ui/react";
-import { HiOutlineBriefcase, HiOutlineMenu, HiOutlineUserAdd, HiOutlineUser } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import { SettingsIcon } from "@chakra-ui/icons";
-import { MdLogout } from "react-icons/md";
+
+import useAuth from "@/hooks/useAuth";
 
 const MobileAppMenu = () => {
   const { user, Logout } = useAuth();
@@ -32,11 +31,11 @@ const MobileAppMenu = () => {
 
       <HStack spacing={2}>
         <Menu>
-          <MenuButton as={IconButton} aria-label="Menu" icon={<HiOutlineMenu />} variant="ghost" />
+          <MenuButton as={IconButton} aria-label="Menu" icon={<Icon />} variant="ghost" />
           <MenuList maxH="calc(100vh - 100px)" overflowY="auto">
             <MenuGroup title="Projects">
               <MenuItem onClick={() => navigate("/project")}>
-                <Icon as={HiOutlineBriefcase} mr={2} />
+                <Icon mr={2} />
                 Projects
               </MenuItem>
             </MenuGroup>
@@ -48,18 +47,18 @@ const MobileAppMenu = () => {
               {user == null || user?.email == null || user?.email === "" ? (
                 <>
                   <MenuItem onClick={() => navigate("/login")}>
-                    <Icon mr={2} as={HiOutlineUser} />
+                    <Icon mr={2} />
                     Login
                   </MenuItem>
                   <MenuItem onClick={() => navigate("/signup")}>
-                    <Icon mr={2} as={HiOutlineUserAdd} />
+                    <Icon mr={2} />
                     Sign up
                   </MenuItem>
                 </>
               ) : (
                 <>
                   <MenuItem onClick={() => Logout()}>
-                    <Icon as={MdLogout} mr={2} />
+                    <Icon mr={2} />
                     Logout
                   </MenuItem>
                 </>

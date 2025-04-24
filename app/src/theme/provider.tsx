@@ -1,12 +1,18 @@
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { IconButton, ColorModeScript, extendTheme, useColorMode, MenuItem, Box } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
-import { LuMoon, LuSun } from "react-icons/lu";
 
 const colors = {
-  brand: {
+  primary: {
     900: "#1a365d",
     800: "#153e75",
     700: "#2a69ac",
+    600: "#3182ce",
+    500: "#4299e1",
+    400: "#63b3ed",
+    300: "#90cdf4",
+    200: "#bbe3f8",
+    100: "#ebf8ff",
   },
   secondary: {
     900: "#4f5761", // Dark - for primary text
@@ -14,6 +20,10 @@ const colors = {
     700: "#E2E8F0", // Medium light - for disabled text
     600: "#EDF2F7", // Light - for subtle text
     500: "#F7FAFC", // Very light - for ghost text
+    400: "#F7FAFC",
+    300: "#F7FAFC",
+    200: "#F7FAFC",
+    100: "#F7FAFC",
   },
 };
 
@@ -52,7 +62,7 @@ export function ColorModeToggle() {
     <header>
       <IconButton
         aria-label={colorMode === "light" ? "Dark" : "Light"}
-        icon={colorMode === "light" ? <LuSun /> : <LuMoon />}
+        icon={colorMode === "light" ? <SunIcon /> : <MoonIcon />}
         onClick={toggleColorMode}
       ></IconButton>
     </header>
@@ -63,7 +73,7 @@ export function MenuItemColorModeToggle() {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <MenuItem onClick={toggleColorMode}>
-      <Box pr={2}>{colorMode === "light" ? <LuSun /> : <LuMoon />} </Box>{" "}
+      <Box pr={2}>{colorMode === "light" ? <SunIcon /> : <MoonIcon />} </Box>{" "}
       {colorMode === "light" ? " Change to Dark" : " Change to Light"}
     </MenuItem>
   );

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import ImageUploadInput from "./ImageUploadSingle";
 import { expect, describe, it } from "vitest";
+
+import ImageUploadInput from "./ImageUploadInput";
 import { imageUpload } from "./utils.image.test";
 
 describe("ImageUploadSingleInput Component", () => {

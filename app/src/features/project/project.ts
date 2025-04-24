@@ -1,5 +1,6 @@
-import pb from "@/pb";
 import { ProjectInputType, ProjectType } from "@project/shared/types";
+
+import pb from "@/pb";
 import { moderateObject } from "@/utils/moderation";
 
 async function getProject(projectId: string) {
@@ -22,7 +23,7 @@ export async function createProject(userId: string | undefined, data: ProjectInp
   }
 
   // Extract only the text-based content by excluding fields such as imageFiles
-  const { imageFiles, ...textOnlyData } = data;
+  const { imageFiles: _, ...textOnlyData } = data;
 
   // Check the content of the object using moderation
   const results = await moderateObject(userId, "Projects", textOnlyData);

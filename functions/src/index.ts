@@ -1,9 +1,10 @@
 import "dotenv/config";
 
-import express, { Request, Response } from "express";
 import cors from "cors";
-import { validateToken } from "./pb/pocket_auth.js";
+import express, { Request, Response } from "express";
+
 import { processContentModeration } from "./moderator.js";
+import { validateToken } from "./pocket_base.js";
 
 const app = express();
 const PORT = process.env.FUNCTIONS_PORT || 8081;
@@ -18,7 +19,6 @@ app.post("/functions/moderator", async (req: Request, res: Response) => {
 
     if (!isTokenValid) {
       res.status(401).json({ error: "Invalid token" });
-      // return;
     }
 
     const message = req.body.message;
@@ -27,7 +27,9 @@ app.post("/functions/moderator", async (req: Request, res: Response) => {
     res.json({ moderation });
   } catch (error: any) {
     console.log("Error processing messages:", error.message);
-    res.status(500).json({ error: error.message });
+    res
+      .status(500)
+      .json({ error: error.message || "An unexpected error occurred" });
   }
 });
 

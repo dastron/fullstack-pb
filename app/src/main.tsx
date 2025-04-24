@@ -1,13 +1,14 @@
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import App from "./App.tsx";
 import ErrorPage from "./pages/app/ErrorPage.tsx";
 import SpinnerPage from "./pages/app/SpinnerPage.tsx";
 // load route modules
-import { ProjectRoutes } from "./pages/ProjectRoutes.tsx";
 import { AppRoutes } from "./pages/AppRoutes.tsx";
+import { ProjectRoutes } from "./pages/ProjectRoutes.tsx";
 import { SettingsRoutes } from "./pages/SettingsRoutes.tsx";
 // Consolidate router configuration
 const future = {

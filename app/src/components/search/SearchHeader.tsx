@@ -1,6 +1,8 @@
 import { useState } from "react";
-import pb from "@/pb";
+
 import SearchFilterHeader from "./SearchFilterHeader";
+
+import pb from "@/pb";
 
 interface SearchHeaderProps {
   onSearch: (searchString: string) => void;

@@ -1,7 +1,8 @@
-import { Card, CardHeader, CardBody, Stack, Heading, Text, HStack } from "@chakra-ui/react";
 import type { ProjectType } from "@project/shared/types";
+
+import { Card, CardHeader, CardBody, Stack, Heading, Text, HStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import MarkdownText from "@/components/MarkdownText";
+
 import { ImageViewer } from "@/components/images/ImageViewer";
 
 interface ProjectCardProps {
@@ -9,8 +10,6 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
-  // Safely determine the balance value and color mode
-
   return (
     <Card boxShadow="lg" borderRadius="lg" border="1px" borderColor="chakra-border-color">
       <ImageViewer
@@ -34,9 +33,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
               Summary: {project.summary}
             </Text>
           )}
-
-          <MarkdownText>{project.content}</MarkdownText>
-
+          {project.content}
           <HStack justify="flex-end" p={3} borderRadius="md">
             <Text fontWeight="medium">
               <Link to={`/profile/${project.User}`}>View Profile</Link>

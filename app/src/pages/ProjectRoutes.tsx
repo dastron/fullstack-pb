@@ -1,7 +1,8 @@
+import { RouteObject } from "react-router-dom";
+
+import ProjectAppNav from "./project/ProjectAppNav";
 import ProjectDetailPage, { ProjectItemQuery } from "./project/ProjectItemPage";
 import ProjectListPage, { ProjectListLoader } from "./project/ProjectListPage";
-import { RouteObject } from "react-router-dom";
-import ProjectAppNav from "./project/ProjectAppNav";
 
 export const ProjectRoutes: RouteObject = {
   path: "/project",
