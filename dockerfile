@@ -66,6 +66,9 @@ ENV NODE_ENV=production
 # Install NGINX + Supervisor for process management
 RUN apk add --no-cache --update nginx supervisor bash
 
+# Create a non-root user and group
+# RUN addgroup -S appgroup && adduser -S -G appgroup appuser
+
 # Enable Corepack & yarn 4.7
 # RUN corepack enable && corepack prepare yarn@4.7.0 --activate
 
