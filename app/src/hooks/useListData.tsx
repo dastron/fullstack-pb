@@ -187,11 +187,6 @@ export interface UseListDataReturn<T extends RecordModel> {
     hasMore: boolean;
 
     /**
-     * Ref to attach to the loading trigger element
-     */
-    loadMoreRef: React.RefObject<HTMLElement>;
-
-    /**
      * Reset infinite scroll to the beginning
      */
     reset: () => Promise<void>;
@@ -310,14 +305,14 @@ export function useListData<T extends RecordModel>(
   const infiniteScrollResult = useListInfiniteScroll(
     enableInfiniteScroll ? mutator : (null as any), // Pass null when disabled
     enableInfiniteScroll ? infiniteScrollParams : {},
-    {
-      ...infiniteScrollOptions,
-      enabled: enableInfiniteScroll,
-      onLoadMore: (page, totalLoaded) => {
-        infiniteScrollOptions?.onLoadMore?.(page, totalLoaded);
-        // Remove onListUpdated callback to prevent side effects
-      },
-    }
+    enableInfiniteScroll
+      ? {
+          ...infiniteScrollOptions,
+          onLoadMore: (page, totalLoaded) => {
+            infiniteScrollOptions?.onLoadMore?.(page, totalLoaded);
+          },
+        }
+      : {} // Don't pass any options when disabled
   );
 
   // State management (for pagination mode)
@@ -522,7 +517,6 @@ export function useListData<T extends RecordModel>(
     infiniteScroll: enableInfiniteScroll
       ? {
           hasMore: infiniteScrollResult.hasMore,
-          loadMoreRef: infiniteScrollResult.loadMoreRef,
           reset: infiniteScrollResult.reset,
         }
       : undefined,

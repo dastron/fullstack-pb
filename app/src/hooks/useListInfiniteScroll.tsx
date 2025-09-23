@@ -106,10 +106,7 @@ export interface UseListInfiniteScrollReturn<T extends RecordModel> {
    */
   refresh: () => Promise<void>;
 
-  /**
-   * Ref to attach to the loading trigger element
-   */
-  loadMoreRef: React.RefObject<HTMLElement>;
+  // Note: loadMoreRef is now handled by CardPatternInfinite component
 
   /**
    * Add an item to the beginning of the list (optimistic update)
@@ -138,6 +135,7 @@ export interface UseListInfiniteScrollReturn<T extends RecordModel> {
     pagesLoaded: number;
     itemsPerPage: number;
     lastLoadTime: number | null;
+    isInitialized: boolean;
   };
 }
 
@@ -193,15 +191,7 @@ export function useListInfiniteScroll<T extends RecordModel>(
   params: InfiniteScrollParams = {},
   options: InfiniteScrollOptions = {}
 ): UseListInfiniteScrollReturn<T> {
-  const {
-    threshold: _threshold = 100,
-    enabled = true,
-    root = null,
-    rootMargin = "0px",
-    onLoadMore,
-    onReachEnd,
-    onLoadingChange,
-  } = options;
+  const { onLoadMore, onReachEnd, onLoadingChange } = options;
 
   const { perPage = 20, filter, sort, expand } = params;
 
@@ -215,11 +205,8 @@ export function useListInfiniteScroll<T extends RecordModel>(
   const [lastLoadTime, setLastLoadTime] = useState<number | null>(null);
 
   // Refs
-  const loadMoreRef = useRef<HTMLElement>(null);
   const isLoadingRef = useRef(false);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const isObserverActiveRef = useRef(false);
-  const loadMoreFnRef = useRef<(() => Promise<void>) | null>(null);
+  const isInitializedRef = useRef(false);
 
   // Update loading state and notify callback
   const updateLoadingState = useCallback(
@@ -230,6 +217,16 @@ export function useListInfiniteScroll<T extends RecordModel>(
     },
     [onLoadingChange]
   );
+
+  // Check if an error is an auto-cancellation error
+  const isAutoCancellationError = useCallback((error: any): boolean => {
+    return (
+      error instanceof Error &&
+      (error.message.includes("autocancelled") ||
+        error.message.includes("The request was autocancelled") ||
+        (error.name === "AbortError" && error.message.includes("signal is aborted")))
+    );
+  }, []);
 
   // Load a specific page and append to items
   const loadPage = useCallback(
@@ -245,21 +242,20 @@ export function useListInfiniteScroll<T extends RecordModel>(
 
         if (append) {
           setItems((prevItems) => {
-            const totalLoaded = prevItems.length + result.items.length;
-            // Call onLoadMore callback with correct total
-            onLoadMore?.(result.page, totalLoaded);
             return [...prevItems, ...result.items];
           });
         } else {
           setItems(result.items);
-          // Call onLoadMore callback
-          onLoadMore?.(result.page, result.items.length);
         }
 
         setCurrentPage(result.page);
         setTotalItems(result.totalItems);
         setTotalPages(result.totalPages);
         setHasMore(result.page < result.totalPages);
+
+        console.debug(
+          `loadPage result: page=${result.page}, totalPages=${result.totalPages}, hasMore=${result.page < result.totalPages}, totalItems=${result.totalItems}`
+        );
 
         // Call onReachEnd if we've reached the end
         if (result.page >= result.totalPages) {
@@ -268,30 +264,47 @@ export function useListInfiniteScroll<T extends RecordModel>(
 
         return result;
       } catch (error) {
+        if (isAutoCancellationError(error)) {
+          console.debug("Page load request was auto-cancelled, ignoring error:", error);
+          return null;
+        }
         console.error("Error loading page:", error);
         return null;
       } finally {
         updateLoadingState(false);
       }
     },
-    [mutator, perPage, filter, sort, expand, onLoadMore, onReachEnd, updateLoadingState]
+    [mutator, perPage, filter, sort, expand, onReachEnd, updateLoadingState, isAutoCancellationError]
   );
 
-  // Load the next page
+  // Load the next page with resilience to cancellations
   const loadMore = useCallback(async () => {
     if (!hasMore || isLoadingRef.current || !mutator || !mutator.getList) {
       console.debug(`loadMore blocked: hasMore=${hasMore}, isLoading=${isLoadingRef.current}, mutator=${!!mutator}`);
       return;
     }
-    
-    console.debug(`loadMore executing: currentPage=${currentPage}, hasMore=${hasMore}`);
-    await loadPage(currentPage + 1, true);
-  }, [hasMore, currentPage, loadPage, mutator]);
 
-  // Update the ref whenever loadMore changes
-  useEffect(() => {
-    loadMoreFnRef.current = loadMore;
-  }, [loadMore]);
+    console.debug(`loadMore executing: currentPage=${currentPage}, hasMore=${hasMore}`);
+
+    try {
+      const result = await loadPage(currentPage + 1, true);
+
+      // Only call onLoadMore callback when user explicitly loads more
+      if (result) {
+        const totalLoaded = items.length + result.items.length;
+        onLoadMore?.(result.page, totalLoaded);
+        console.debug(`User-initiated loadMore completed: page=${result.page}, totalLoaded=${totalLoaded}`);
+      } else {
+        console.debug("Load more returned null - likely due to cancellation or error");
+      }
+    } catch (error) {
+      if (!isAutoCancellationError(error)) {
+        console.error("Error in loadMore:", error);
+      }
+    }
+  }, [hasMore, currentPage, loadPage, mutator, isAutoCancellationError, onLoadMore, items.length]);
+
+  // loadMore function is used directly by CardPatternInfinite component
 
   // Reset to page 1
   const reset = useCallback(async () => {
@@ -303,16 +316,34 @@ export function useListInfiniteScroll<T extends RecordModel>(
     await loadPage(1, false);
   }, [loadPage]);
 
-  // Refresh all data
+  // Refresh all data with resilience to cancellations
   const refresh = useCallback(async () => {
     const pagesToLoad = currentPage;
     setItems([]);
 
     // Load all pages sequentially to maintain order
     for (let page = 1; page <= pagesToLoad; page++) {
-      await loadPage(page, page > 1);
+      try {
+        const result = await loadPage(page, page > 1);
+
+        // If a page fails to load due to cancellation, we can continue
+        if (!result) {
+          console.debug(`Page ${page} refresh was cancelled or failed, continuing...`);
+          // Don't break the loop, just continue to next page
+          continue;
+        }
+      } catch (error) {
+        if (isAutoCancellationError(error)) {
+          console.debug(`Page ${page} refresh was cancelled, continuing...`);
+          continue;
+        } else {
+          // Real error, stop refreshing
+          console.error(`Error refreshing page ${page}:`, error);
+          break;
+        }
+      }
     }
-  }, [currentPage, loadPage]);
+  }, [currentPage, loadPage, isAutoCancellationError]);
 
   // Optimistic update helpers
   const addItem = useCallback((item: T) => {
@@ -329,57 +360,8 @@ export function useListInfiniteScroll<T extends RecordModel>(
     setTotalItems((prev) => Math.max(0, prev - 1));
   }, []);
 
-  // Set up intersection observer for automatic loading
-  useEffect(() => {
-    if (!enabled || !loadMoreRef.current || !hasMore || isObserverActiveRef.current) {
-      console.debug(`Observer setup blocked: enabled=${enabled}, hasRef=${!!loadMoreRef.current}, hasMore=${hasMore}, isActive=${isObserverActiveRef.current}`);
-      return;
-    }
-
-    const element = loadMoreRef.current;
-    console.debug(`Setting up intersection observer: hasMore=${hasMore}, currentPage=${currentPage}, totalPages=${totalPages}`);
-
-    // Clean up any existing observer
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-      observerRef.current = null;
-    }
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        // More defensive check: only load if we really have more pages
-        const shouldLoadMore = entry.isIntersecting && 
-                              hasMore && 
-                              !isLoadingRef.current && 
-                              currentPage < totalPages && 
-                              totalPages > 0; // Ensure we have valid pagination data
-        
-        if (shouldLoadMore && loadMoreFnRef.current) {
-          console.debug(`Intersection observer triggered: hasMore=${hasMore}, isLoading=${isLoadingRef.current}, currentPage=${currentPage}, totalPages=${totalPages}`);
-          loadMoreFnRef.current();
-        }
-      },
-      {
-        root,
-        rootMargin,
-        threshold: 0.1,
-      }
-    );
-
-    observerRef.current.observe(element);
-    isObserverActiveRef.current = true;
-
-    return () => {
-      if (observerRef.current && element) {
-        observerRef.current.unobserve(element);
-        observerRef.current.disconnect();
-        observerRef.current = null;
-      }
-      isObserverActiveRef.current = false;
-      console.debug(`Observer cleaned up`);
-    };
-  }, [enabled, hasMore, currentPage, totalPages, root, rootMargin]); // Removed loadMore to break dependency cycle
+  // NOTE: Intersection observer logic has been moved to CardPatternInfinite component
+  // This hook now only provides data and loadMore function
 
   // Initial load and parameter change handling
   useEffect(() => {
@@ -390,6 +372,7 @@ export function useListInfiniteScroll<T extends RecordModel>(
       setTotalItems(0);
       setTotalPages(0);
       setHasMore(true);
+      isInitializedRef.current = false;
 
       // Load first page directly to avoid dependency issues
       const loadInitialPage = async () => {
@@ -405,14 +388,21 @@ export function useListInfiniteScroll<T extends RecordModel>(
           setTotalItems(result.totalItems);
           setTotalPages(result.totalPages);
           setHasMore(result.page < result.totalPages);
+          isInitializedRef.current = true;
 
-          onLoadMore?.(result.page, result.items.length);
+          console.debug(
+            `Initial load result: page=${result.page}, totalPages=${result.totalPages}, hasMore=${result.page < result.totalPages}, totalItems=${result.totalItems}, itemsLength=${result.items.length}`
+          );
 
           if (result.page >= result.totalPages) {
             onReachEnd?.();
           }
         } catch (error) {
-          console.error("Error loading initial page:", error);
+          if (isAutoCancellationError(error)) {
+            console.debug("Initial page load was auto-cancelled, will be retried:", error);
+          } else {
+            console.error("Error loading initial page:", error);
+          }
         } finally {
           updateLoadingState(false);
         }
@@ -420,16 +410,9 @@ export function useListInfiniteScroll<T extends RecordModel>(
 
       loadInitialPage();
     }
-  }, [mutator, perPage, filter, sort, expand, onLoadMore, onReachEnd, updateLoadingState]); // Re-run when mutator or parameters change
+  }, [mutator, perPage, filter, sort, expand, onReachEnd, updateLoadingState, isAutoCancellationError]); // Re-run when mutator or parameters change
 
-  // Cleanup observer on unmount
-  useEffect(() => {
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, []);
+  // Observer cleanup is handled by CardPatternInfinite component
 
   return {
     items,
@@ -441,7 +424,6 @@ export function useListInfiniteScroll<T extends RecordModel>(
     loadMore,
     reset,
     refresh,
-    loadMoreRef,
     addItem,
     updateItem,
     removeItem,
@@ -450,6 +432,7 @@ export function useListInfiniteScroll<T extends RecordModel>(
       pagesLoaded: currentPage,
       itemsPerPage: perPage,
       lastLoadTime,
+      isInitialized: isInitializedRef.current,
     },
   };
 }
@@ -471,15 +454,15 @@ export function useSimpleInfiniteScroll<T extends RecordModel>(
   _threshold: number = 100
 ): Pick<
   UseListInfiniteScrollReturn<T>,
-  "items" | "isLoading" | "hasMore" | "loadMoreRef" | "refresh" | "addItem" | "updateItem" | "removeItem"
+  "items" | "isLoading" | "hasMore" | "refresh" | "addItem" | "updateItem" | "removeItem"
 > {
-  const { items, isLoading, hasMore, loadMoreRef, refresh, addItem, updateItem, removeItem } = useListInfiniteScroll(
+  const { items, isLoading, hasMore, refresh, addItem, updateItem, removeItem } = useListInfiniteScroll(
     mutator,
     params,
     { threshold: _threshold }
   );
 
-  return { items, isLoading, hasMore, loadMoreRef, refresh, addItem, updateItem, removeItem };
+  return { items, isLoading, hasMore, refresh, addItem, updateItem, removeItem };
 }
 
 export default useListInfiniteScroll;

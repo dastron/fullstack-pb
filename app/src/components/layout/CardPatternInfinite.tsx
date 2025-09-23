@@ -166,18 +166,24 @@ export function CardPatternInfinite<T extends RecordModel>({
   debugInfo,
 }: CardPatternInfiniteProps<T>) {
   const prefixPath = prefix ? `${prefix}/` : "";
-  
+
   // Ref for intersection observer
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   // Intersection observer for automatic infinite scroll
   useEffect(() => {
-    if (!enableInfiniteScroll || !hasMore || isLoading || !onLoadMore) return;
+    if (!enableInfiniteScroll || !hasMore || isLoading || !onLoadMore) {
+      console.debug(
+        `CardPatternInfinite observer blocked: enableInfiniteScroll=${enableInfiniteScroll}, hasMore=${hasMore}, isLoading=${isLoading}, onLoadMore=${!!onLoadMore}`
+      );
+      return;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
         if (entry.isIntersecting) {
+          console.debug("CardPatternInfinite: Intersection observer triggered, calling onLoadMore");
           onLoadMore();
         }
       },
@@ -189,6 +195,12 @@ export function CardPatternInfinite<T extends RecordModel>({
 
     const currentRef = loadMoreRef.current;
     if (currentRef) {
+      console.debug("CardPatternInfinite: Setting up intersection observer", {
+        hasMore,
+        isLoading,
+        enableInfiniteScroll,
+        dataLength: data.length,
+      });
       observer.observe(currentRef);
     }
 
@@ -197,7 +209,7 @@ export function CardPatternInfinite<T extends RecordModel>({
         observer.unobserve(currentRef);
       }
     };
-  }, [enableInfiniteScroll, hasMore, isLoading, onLoadMore]);
+  }, [enableInfiniteScroll, hasMore, isLoading, onLoadMore, data.length]);
 
   // Error state
   if (error && errorComponent) {
@@ -257,14 +269,7 @@ export function CardPatternInfinite<T extends RecordModel>({
 
       {/* Loading trigger and indicator - only show if we actually have more items */}
       {hasMore && data.length > 0 && (
-        <Box
-          ref={loadMoreRef}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          py={8}
-          minHeight="80px"
-        >
+        <Box ref={loadMoreRef} display="flex" justifyContent="center" alignItems="center" py={8} minHeight="80px">
           {isLoading ? (
             loadingComponent || (
               <Flex align="center" gap={3}>

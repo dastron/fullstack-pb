@@ -18,16 +18,17 @@ const ProjectListPage = () => {
     isLoadingMore,
     infiniteScroll,
     loadMore,
-    refresh,
     debug,
   } = useListData(loaderData, {
-    enableInfiniteScroll: false, // Enable infinite scroll
+    enableInfiniteScroll: true, // Enable infinite scroll
     enableSubscription: false, // Enable real-time updates
     autoRefresh: false, // Don't auto-refresh on mount
     infiniteScrollOptions: {
       threshold: 100,
       onLoadMore: (page, totalLoaded) => {
-        console.debug(`onLoadMore called: page ${page}, total items: ${totalLoaded}, hasMore: ${infiniteScroll?.hasMore}, isLoading: ${isLoadingMore}`);
+        console.debug(
+          `onLoadMore called: page ${page}, total items: ${totalLoaded}, hasMore: ${infiniteScroll?.hasMore}, isLoading: ${isLoadingMore}`
+        );
       },
     },
     onItemAdded: (item) => {
@@ -61,9 +62,10 @@ const ProjectListPage = () => {
         columns={["title", "status", "created", "_action"]}
         prefix="/project"
         isLoading={isLoadingMore}
-        hasMore={infiniteScroll?.hasMore}
-        onLoadMore={loadMore}
-        onRetry={refresh}
+        hasMore={infiniteScroll?.hasMore ?? false}
+        onLoadMore={infiniteScroll ? loadMore : undefined}
+        enableInfiniteScroll={!!infiniteScroll}
+        // onRetry={refresh}
         showDebug={process.env.NODE_ENV === "development"}
         debugInfo={debug}
       />
