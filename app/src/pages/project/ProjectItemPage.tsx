@@ -1,40 +1,41 @@
-import type { ProjectType } from "@project/shared/types";
+import type { ProjectItemLoaderData } from "./ProjectItemLoader";
 
 import { Heading, Stack } from "@chakra-ui/react";
-import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
+
+import { ProjectItemQuery } from "./ProjectItemLoader";
 
 import ProjectCard from "@/features/project/ProjectCard";
-import { useProjectItemSubscription } from "@/pages/project/useProjectItemSubscription";
-import pb from "@/pb";
-
-type URLParams = {
-  params: {
-    projectId?: string;
-  };
-};
-
-export const ProjectItemQuery = async ({ params }: URLParams) => {
-  const project = await pb.collection("Projects").getOne(params?.projectId ?? "", {});
-  return project;
-};
+import { useItemData } from "@/hooks/useItemData";
 
 const ProjectDetailPage = () => {
-  const loader = useLoaderData() as ProjectType | undefined;
-  const projectId = loader?.id;
-  const [project, setProject] = useState<ProjectType | undefined>(loader);
+  const loaderData = useLoaderData() as ProjectItemLoaderData;
+  const navigate = useNavigate();
 
-  useProjectItemSubscription(projectId, (event) => {
-    console.log(`Project ${event.action}:`, event.record);
-    if (event.action !== "delete") setProject(event.record);
+  const { item: project, debug } = useItemData(loaderData, {
+    enableSubscription: true,
+    onItemUpdated: (item) => {
+      console.log(`Project updated:`, item);
+    },
+    onItemDeleted: () => {
+      console.log("Project deleted, navigating to projects list");
+      navigate("/projects");
+    },
+    onSubscriptionError: (error) => {
+      console.error("Project subscription error:", error);
+    },
   });
 
   return (
     <Stack>
       <Heading>{project?.title}</Heading>
       {project && <ProjectCard project={project} />}
+      {process.env.NODE_ENV === "development" && debug.subscriptionEnabled && (
+        <small style={{ color: "gray" }}>Real-time updates enabled</small>
+      )}
     </Stack>
   );
 };
 
 export default ProjectDetailPage;
+export { ProjectItemQuery };

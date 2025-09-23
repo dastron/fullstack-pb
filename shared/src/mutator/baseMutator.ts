@@ -374,14 +374,24 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
     error: any,
     options: {
       allowNotFound?: boolean;
+      allowAutoCancellation?: boolean;
       returnValue?: R;
       logError?: boolean;
-    } = { logError: true }
+    } = { logError: true, allowAutoCancellation: true }
   ): R {
-    const { allowNotFound = false, returnValue, logError = true } = options;
+    const { allowNotFound = false, allowAutoCancellation = true, returnValue, logError = true } = options;
 
-    // Log the error if requested
-    if (logError) {
+    // Handle auto-cancellation errors (typically from React StrictMode duplicate calls)
+    if (allowAutoCancellation && this.isAutoCancellationError(error)) {
+      // Don't log auto-cancellation errors as they're expected in development
+      if (logError && process.env.NODE_ENV !== "development") {
+        console.warn(`Auto-cancellation in ${this.constructor.name}:`, error.message);
+      }
+      return null as R;
+    }
+
+    // Log the error if requested (but not for auto-cancellation)
+    if (logError && !this.isAutoCancellationError(error)) {
       console.error(`Error in ${this.constructor.name}:`, error);
     }
 
@@ -409,9 +419,32 @@ export abstract class BaseMutator<T extends RecordModel, InputType> {
   }
 
   /**
+   * Check if an error is an auto-cancellation error from PocketBase
+   */
+  protected isAutoCancellationError(error: any): boolean {
+    return (
+      error instanceof Error &&
+      (error.message.includes("autocancelled") ||
+        error.message.includes("The request was autocancelled") ||
+        (error.name === "AbortError" && error.message.includes("signal is aborted")))
+    );
+  }
+
+  /**
    * Standard error handling wrapper (legacy method, consider using handleError instead)
    */
   protected errorWrapper(error: any): never {
+    // Handle auto-cancellation errors gracefully by using the standard handleError method
+    if (this.isAutoCancellationError(error)) {
+      // Don't log auto-cancellation errors in development as they're expected
+      if (process.env.NODE_ENV !== "development") {
+        console.warn(`Auto-cancellation in ${this.constructor.name}:`, error.message);
+      }
+      // For list operations, return empty list result; for single operations, return null
+      // This is a fallback - ideally callers should use handleError directly
+      throw new Error("Auto-cancelled request - this should be handled by the caller");
+    }
+
     console.error(`Error in ${this.constructor.name}:`, error);
     throw error;
   }

@@ -1,28 +1,48 @@
-import type { ProjectType } from "@project/shared/types";
-import type { ListResult } from "pocketbase";
+import type { ProjectListLoaderData } from "./ProjectListLoader";
 
 import { Button, Flex, Heading, Spacer, Stack } from "@chakra-ui/react";
 import { Link, useLoaderData, useParams } from "react-router-dom";
 
-import { CardPattern } from "@/components/CardPattern";
+import { CardPatternInfinite } from "@/components/layout/CardPatternInfinite";
 import SearchQueryHeader from "@/components/search/SearchQueryHeader";
-import pb from "@/pb";
-import { getQueryParams } from "@/utils/query";
-
-export const ProjectListQuery = async (sort: string = "-updated", filter: string = "") => {
-  return await pb.collection("Projects").getList(1, 30, { sort, filter });
-};
-
-export const ProjectListLoader = async (context: any) => {
-  const { filter, sort } = getQueryParams(context.request.url);
-  return await ProjectListQuery(sort, filter);
-};
+import { useListData } from "@/hooks/useListData";
 
 const ProjectListPage = () => {
-  const loader = useLoaderData() as ListResult<ProjectType> | undefined;
-  const projects = loader?.items || [];
+  const loaderData = useLoaderData() as ProjectListLoaderData;
   const { requestId } = useParams();
   const title = requestId ? "Request Projects" : "Projects";
+
+  // Use the enhanced list data hook with infinite scroll
+  const {
+    items: projects,
+    isLoadingMore,
+    infiniteScroll,
+    loadMore,
+    refresh,
+    debug,
+  } = useListData(loaderData, {
+    enableInfiniteScroll: false, // Enable infinite scroll
+    enableSubscription: false, // Enable real-time updates
+    autoRefresh: false, // Don't auto-refresh on mount
+    infiniteScrollOptions: {
+      threshold: 100,
+      onLoadMore: (page, totalLoaded) => {
+        console.debug(`onLoadMore called: page ${page}, total items: ${totalLoaded}, hasMore: ${infiniteScroll?.hasMore}, isLoading: ${isLoadingMore}`);
+      },
+    },
+    onItemAdded: (item) => {
+      console.debug("Project added via subscription:", item.id);
+    },
+    onItemUpdated: (item) => {
+      console.debug("Project updated via subscription:", item.id);
+    },
+    onItemRemoved: (itemId) => {
+      console.debug("Project removed via subscription:", itemId);
+    },
+    onSubscriptionError: (error) => {
+      console.error("Project subscription error:", error);
+    },
+  });
 
   return (
     <Stack spacing={4}>
@@ -34,7 +54,19 @@ const ProjectListPage = () => {
         </Button>
       </Flex>
       <SearchQueryHeader />
-      <CardPattern data={projects} columns={["title", "status"]} prefix="/project" />
+
+      {/* Use CardPatternInfinite with infinite scroll support */}
+      <CardPatternInfinite
+        data={projects}
+        columns={["title", "status", "created", "_action"]}
+        prefix="/project"
+        isLoading={isLoadingMore}
+        hasMore={infiniteScroll?.hasMore}
+        onLoadMore={loadMore}
+        onRetry={refresh}
+        showDebug={process.env.NODE_ENV === "development"}
+        debugInfo={debug}
+      />
     </Stack>
   );
 };
