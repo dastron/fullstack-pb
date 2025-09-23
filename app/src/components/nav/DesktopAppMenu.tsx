@@ -1,4 +1,4 @@
-import { HamburgerIcon, SettingsIcon } from "@chakra-ui/icons";
+import { AddIcon, HamburgerIcon, LockIcon, SettingsIcon, UnlockIcon, ViewIcon } from "@chakra-ui/icons";
 import { Box, HStack, Icon, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
@@ -43,19 +43,31 @@ const DesktopAppMenu = () => {
               {user == null || user?.email == null || user?.email === "" ? (
                 <>
                   <Link to="/login">
-                    <MenuItem>Login</MenuItem>
+                    <MenuItem>
+                      <Icon mr={2} as={LockIcon} />
+                      Login
+                    </MenuItem>
                   </Link>
                   <Link to="/signup">
-                    <MenuItem>Sign up</MenuItem>
+                    <MenuItem>
+                      <Icon mr={2} as={AddIcon} />
+                      Sign up
+                    </MenuItem>
                   </Link>
                 </>
               ) : (
                 <>
                   <Link to="/profile">
-                    <MenuItem>Profile</MenuItem>
+                    <MenuItem>
+                      <Icon mr={2} as={ViewIcon} />
+                      Profile
+                    </MenuItem>
                   </Link>
                   <Link to="/" onClick={() => Logout()}>
-                    <MenuItem>Logout</MenuItem>
+                    <MenuItem>
+                      <Icon mr={2} as={UnlockIcon} />
+                      Logout
+                    </MenuItem>
                   </Link>
                 </>
               )}

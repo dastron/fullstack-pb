@@ -1,4 +1,4 @@
-import { SettingsIcon } from "@chakra-ui/icons";
+import { AddIcon, HamburgerIcon, LockIcon, SettingsIcon, UnlockIcon, ViewIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -31,11 +31,11 @@ const MobileAppMenu = () => {
 
       <HStack spacing={2}>
         <Menu>
-          <MenuButton as={IconButton} aria-label="Menu" icon={<Icon />} variant="ghost" />
+          <MenuButton as={IconButton} aria-label="Menu" icon={<HamburgerIcon />} variant="ghost" />
           <MenuList maxH="calc(100vh - 100px)" overflowY="auto">
             <MenuGroup title="Projects">
               <MenuItem onClick={() => navigate("/project")}>
-                <Icon mr={2} />
+                <Icon as={ViewIcon} mr={2} />
                 Projects
               </MenuItem>
             </MenuGroup>
@@ -47,18 +47,18 @@ const MobileAppMenu = () => {
               {user == null || user?.email == null || user?.email === "" ? (
                 <>
                   <MenuItem onClick={() => navigate("/login")}>
-                    <Icon mr={2} />
+                    <Icon as={LockIcon} mr={2} />
                     Login
                   </MenuItem>
                   <MenuItem onClick={() => navigate("/signup")}>
-                    <Icon mr={2} />
+                    <Icon as={AddIcon} mr={2} />
                     Sign up
                   </MenuItem>
                 </>
               ) : (
                 <>
                   <MenuItem onClick={() => Logout()}>
-                    <Icon mr={2} />
+                    <Icon as={UnlockIcon} mr={2} />
                     Logout
                   </MenuItem>
                 </>
