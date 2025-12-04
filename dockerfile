@@ -47,12 +47,12 @@ ENV ACTUAL_PB_VERSION=${PB_VERSION}
 
 RUN apk add --no-cache unzip ca-certificates wget \
   && wget -q https://github.com/pocketbase/pocketbase/releases/download/v${ACTUAL_PB_VERSION}/pocketbase_${ACTUAL_PB_VERSION}_linux_${TARGETARCH}.zip -O /tmp/pb.zip \
-  && unzip /tmp/pb.zip -d /pb/ \
+  && unzip /tmp/pb.zip -d /pocketbase/ \
   && rm /tmp/pb.zip
 
-COPY pb/pb_migrations /pb/pb_migrations
-COPY pb/pb_data       /pb/pb_data
-COPY pb/pb_hooks      /pb/pb_hooks
+COPY pocketbase/pb_migrations /pocketbase/pb_migrations
+COPY pocketbase/pb_data       /pocketbase/pb_data
+COPY pocketbase/pb_hooks      /pocketbase/pb_hooks
 
 
 ###################################################
@@ -73,7 +73,7 @@ RUN apk add --no-cache --update nginx supervisor bash
 # RUN corepack enable && corepack prepare yarn@4.7.0 --activate
 
 # 1) Copy PocketBase from its build stage
-COPY --from=pocketbase /pb /pb
+COPY --from=pocketbase /pocketbase /pocketbase
 
 # 2) Set up project workspace
 WORKDIR /workspace

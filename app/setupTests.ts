@@ -62,6 +62,13 @@ Object.keys(collectionsConfig).forEach((collectionName) => {
   >(collectionName);
 });
 
+const mockAuthStore = {
+  record: {
+    id: "123",
+    name: "Test User",
+  },
+};
+
 // Export the mock for use in your tests
 export const TypedPocketBaseMock = {
   ...vi.importActual("@/pb"),
@@ -69,6 +76,7 @@ export const TypedPocketBaseMock = {
     return `https://picsum.photos/seed/${item.id}/1200/600`;
   }),
   filter: vi.fn(),
+  authStore: mockAuthStore,
   collection: vi.fn((name: string) => {
     const collection = mockTypedPocketBase[name];
     if (!collection) {

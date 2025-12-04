@@ -1,21 +1,18 @@
-import { mergeConfig } from "vite";
+import path from "path";
+
+import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
-import viteConfig from "./vite.config";
-
-export default mergeConfig(
-  viteConfig,
-  defineConfig({
-    test: {
-      environment: "happy-dom",
-      // globals: true,
-      // clearMocks: true,
-      // mockReset: true,
-      // restoreMocks: true,
-      setupFiles: ["setupTests.ts"],
-      alias: {
-        "@/": new URL("./src/", import.meta.url).pathname,
-      },
+export default defineConfig({
+  plugins: [react(), tsconfigPaths()],
+  test: {
+    environment: "happy-dom",
+    setupFiles: ["setupTests.ts"],
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     },
-  })
-);
+  },
+});

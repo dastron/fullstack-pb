@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { StatusEnum } from "../enums";
-import { baseImageFileSchema, inputImageFileSchema, omitImageFilesSchema } from "./base";
+import { baseImageFileSchema, inputImageFileSchema, omitImageFilesSchema, withPermissions } from "./base";
 
 export const ProjectInputSchema = z
   .object({
@@ -14,4 +14,20 @@ export const ProjectInputSchema = z
     SubscriberUsers: z.array(z.string()),
   })
   .extend(inputImageFileSchema);
-export const ProjectSchema = ProjectInputSchema.omit(omitImageFilesSchema).extend(baseImageFileSchema);
+
+// Apply permissions using template with custom overrides
+// Uses 'owner-only' template but allows all authenticated users to list projects
+// This allows users to see all projects but only manage their own
+export const ProjectSchema = withPermissions(
+  ProjectInputSchema.omit(omitImageFilesSchema).extend(baseImageFileSchema),
+  {
+    template: "owner-only",
+    ownerField: "User",
+    customRules: {
+      // Override list rule to allow authenticated users to see all projects
+      listRule: '@request.auth.id != ""',
+      // Allow viewing if user is owner OR a subscriber
+      viewRule: '@request.auth.id != "" && (User = @request.auth.id || SubscriberUsers ?= @request.auth.id)',
+    },
+  }
+);

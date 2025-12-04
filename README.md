@@ -46,12 +46,20 @@ yarn build
 # Run PocketBase server only
 yarn pb
 
+# Generate migrations from Zod schemas
+yarn migrate:generate
+
+# Check migration status
+yarn migrate:status
+
 # Sync dev database migrations to/from project
 yarn pb:sync
 
-
 # Creates a migration snapshot of the current pb
 yarn pb:snapshot
+
+# Create/regenerate base snapshot from PocketBase
+yarn pb:base-snapshot
 ```
 
 ### Testing & Quality
@@ -78,16 +86,71 @@ yarn why          # Check why a package is installed
 
 ```
 project/
-├── app/           # Vite React frontend
+├── app/                    # Vite React frontend
 │   └── package.json
-├── functions/     # Node.js/Express backend
+├── functions/              # Node.js/Express backend
 │   └── package.json
-├── shared/        # Shared code between workspaces
+├── shared/                 # Shared code between workspaces
+│   ├── src/
+│   │   ├── schema/         # Zod schemas (source of truth for DB)
+│   │   ├── migration/      # Migration generation system
+│   │   └── cli/            # CLI commands
+│   ├── MIGRATION_GUIDE.md  # Complete migration documentation
 │   └── package.json
-├── pb/            # PocketBase backend
-├── package.json   # Root configuration
+├── pocketbase/             # PocketBase configuration
+│   └── pb_migrations/      # Generated migration files
+├── package.json            # Root configuration
 └── README.md
 ```
+
+## Schema-Driven Migrations
+
+This project uses a schema-driven approach where Zod schemas in `shared/src/schema/` serve as the single source of truth for the database structure. Migrations are automatically generated from these schemas.
+
+### Base Snapshot
+
+The migration system uses a **base snapshot** (`pocketbase/pb_migrations/000000000_collections_snapshot.js`) that represents PocketBase's initial state with system collections. This file:
+
+- Contains PocketBase's default system collections (`_mfas`, `_otps`, `_externalAuths`, `_authOrigins`, `_superusers`)
+- Includes the default `users` collection
+- Serves as the starting point for schema comparisons
+- Is automatically created during `yarn setup` if it doesn't exist
+
+**When to regenerate the base snapshot:**
+- After upgrading PocketBase versions (system collections may change)
+- When setting up a new development environment
+- If the base snapshot is missing or corrupted
+
+```bash
+yarn pb:base-snapshot
+```
+
+### Quick Start
+
+1. **Define schema** in `shared/src/schema/entity.ts`:
+```typescript
+import { z } from "zod";
+import { baseSchema } from "./base";
+
+export const EntityInputSchema = z.object({
+  name: z.string().min(2),
+  status: z.enum(["active", "inactive"]),
+});
+
+export const EntitySchema = EntityInputSchema.extend(baseSchema);
+```
+
+2. **Generate migration**:
+```bash
+yarn migrate:generate
+```
+
+3. **Apply migration** (automatic on PocketBase startup):
+```bash
+yarn pb
+```
+
+For complete documentation, see [shared/MIGRATION_GUIDE.md](./shared/MIGRATION_GUIDE.md).
 
 ## Development Environment
 

@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2025-01-01T00:00:00.000Z",
+  "collections": {
+    "edit_collection_add_field": {
+      "name": "edit_collection_add_field",
+      "type": "base",
+      "fields": [],
+      "indexes": [],
+      "rules": {
+        "listRule": null,
+        "viewRule": null,
+        "createRule": null,
+        "updateRule": null,
+        "deleteRule": null
+      },
+      "permissions": {
+        "listRule": null,
+        "viewRule": null,
+        "createRule": null,
+        "updateRule": null,
+        "deleteRule": null,
+        "manageRule": null
+      }
+    }
+  }
+}

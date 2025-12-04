@@ -6,10 +6,10 @@ if [ -n "$VERSION" ]; then
 fi
 
 check_files() {
-    if [ -f "/pb/pb_data/auxiliary.db-shm" ]  || \
-        [ -f "/pb/pb_data/auxiliary.db-wal" ] || \
-        [ -f "/pb/pb_data/data.db-shm" ] || \
-        [ -f "/pb/pb_data/data.db-wal" ]; then
+    if [ -f "/pocketbase/pb_data/auxiliary.db-shm" ]  || \
+        [ -f "/pocketbase/pb_data/auxiliary.db-wal" ] || \
+        [ -f "/pocketbase/pb_data/data.db-shm" ] || \
+        [ -f "/pocketbase/pb_data/data.db-wal" ]; then
         return 0  # Files exist, keep waiting
     else
         return 1  # Files don't exist, safe to proceed
@@ -46,7 +46,7 @@ if [ -n "$PB_SUPERUSER_EMAIL" ] && [ -n "$PB_SUPERUSER_PASSWORD" ]; then
         # Password length validation
         if [ ${#PB_SUPERUSER_PASSWORD} -ge 10 ]; then
             echo "Credentials valid. Attempting to create superuser..."
-            /pb/pocketbase superuser upsert "$PB_SUPERUSER_EMAIL" "$PB_SUPERUSER_PASSWORD"
+            /pocketbase/pocketbase superuser upsert "$PB_SUPERUSER_EMAIL" "$PB_SUPERUSER_PASSWORD"
             # Check the exit status of the command
             if [ $? -eq 0 ]; then
                 echo "Superuser created successfully or already exists."

@@ -3,7 +3,7 @@
 # Default PocketBase version if not set in environment
 DEFAULT_PB_VERSION="0.27.0"
 PB_VERSION=${PB_VERSION:-$DEFAULT_PB_VERSION}
-PB_PATH="./pocket_base"
+PB_PATH="./pocketbase"
 
 # Load superuser credentials from .env file if it exists
 if [ -f ".env" ]; then
@@ -69,17 +69,35 @@ else
     fi
 fi
 
-# Copy migrations and data if they exist
-if [ -d "./pb/pb_migrations" ]; then
-    echo "Copying migrations..."
-    mkdir -p "${PB_PATH}/pb_migrations"
-    cp -R ./pb/pb_migrations/* "${PB_PATH}/pb_migrations/"
-fi
+# Ensure required directories exist
+mkdir -p "${PB_PATH}/pb_migrations"
+mkdir -p "${PB_PATH}/pb_data"
+mkdir -p "${PB_PATH}/pb_hooks"
 
-if [ -d "./pb/pb_data" ]; then
-    echo "Copying data..."
-    mkdir -p "${PB_PATH}/pb_data"
-    cp -R ./pb/pb_data/* "${PB_PATH}/pb_data/"
+echo "PocketBase directories initialized"
+
+# Initialize PocketBase and generate snapshot
+echo "Initializing PocketBase database..."
+# Start PocketBase briefly to initialize system collections
+"${PB_PATH}/pocketbase" migrate up 2>/dev/null || true
+
+# Check if snapshots already exist
+SNAPSHOT_COUNT=$(find "${PB_PATH}/pb_migrations" -name "*_collections_snapshot.js" -o -name "*_snapshot.js" 2>/dev/null | wc -l | tr -d ' ')
+
+if [ "$SNAPSHOT_COUNT" -eq 0 ]; then
+    # Generate snapshot from current database state
+    echo "No snapshots found. Generating initial snapshot from PocketBase..."
+    echo "y" | "${PB_PATH}/pocketbase" migrate collections
+    
+    # Verify snapshot was created
+    SNAPSHOT_COUNT=$(find "${PB_PATH}/pb_migrations" -name "*_collections_snapshot.js" -o -name "*_snapshot.js" 2>/dev/null | wc -l | tr -d ' ')
+    if [ "$SNAPSHOT_COUNT" -gt 0 ]; then
+        echo "Snapshot generated successfully (found ${SNAPSHOT_COUNT} snapshot(s))"
+    else
+        echo "Warning: No snapshot file found after generation"
+    fi
+else
+    echo "Snapshots already exist (found ${SNAPSHOT_COUNT} snapshot(s)). Skipping snapshot generation."
 fi
 
 # Check if superuser credentials are provided and valid

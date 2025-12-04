@@ -7,7 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-pocket_base
 node_modules
 dist
 dist-ssr
@@ -16,6 +15,19 @@ dist-ssr
 .env.local
 .env
 .dockerEnv
+
+# PocketBase runtime files
+*.db
+*.db-shm
+*.db-wal
+pocketbase/pocketbase
+pocketbase/LICENSE.md
+pocketbase/CHANGELOG.md
+pocketbase/pb_data/storage/
+
+# Old PocketBase directories (for migration period)
+pb/
+pocket_base/
 
 # Editor directories and files
 .vscode/*
