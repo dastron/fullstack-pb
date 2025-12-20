@@ -41,7 +41,7 @@ RUN yarn build
 ###################################################
 FROM alpine:latest AS pocketbase
 
-ARG PB_VERSION=0.27.0
+ARG PB_VERSION=0.34.2
 ARG TARGETARCH
 ENV ACTUAL_PB_VERSION=${PB_VERSION}
 
@@ -99,7 +99,7 @@ COPY --from=builder /repo/app/dist /usr/share/nginx/html
 # 6) Nginx & Supervisor config and entrypoint
 COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/supervisord.conf /etc/supervisord.conf
-COPY entrypoint.sh /usr/local/bin/
+COPY scripts/entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 80 8080 8081

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { StatusEnum } from "../enums";
-import { baseImageFileSchema, inputImageFileSchema, omitImageFilesSchema, withPermissions } from "./base";
+import { baseImageFileSchema, inputImageFileSchema, omitImageFilesSchema, withPermissions } from "pocketbase-zod-schema";
 
 export const ProjectInputSchema = z
   .object({

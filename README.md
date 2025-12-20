@@ -92,10 +92,7 @@ project/
 │   └── package.json
 ├── shared/                 # Shared code between workspaces
 │   ├── src/
-│   │   ├── schema/         # Zod schemas (source of truth for DB)
-│   │   ├── migration/      # Migration generation system
-│   │   └── cli/            # CLI commands
-│   ├── MIGRATION_GUIDE.md  # Complete migration documentation
+│   │   └── schema/         # Zod schemas (source of truth for DB)
 │   └── package.json
 ├── pocketbase/             # PocketBase configuration
 │   └── pb_migrations/      # Generated migration files
@@ -183,7 +180,7 @@ For complete documentation, see [shared/MIGRATION_GUIDE.md](./shared/MIGRATION_G
    VITE_POCKETBASE_URL='http://localhost:8080' # PocketBase URL for frontend
 
    # PocketBase (used in docker/staging)
-   PB_VERSION=0.27.0 # Specify desired PocketBase version
+   PB_VERSION=0.34.2 # Specify desired PocketBase version
    ```
 
 3. Adjust the configuration as needed for your environment.

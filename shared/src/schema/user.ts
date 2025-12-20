@@ -1,10 +1,10 @@
+import { baseSchema, withIndexes, withPermissions } from "pocketbase-zod-schema";
 import { z } from "zod";
-import { baseSchema, withIndexes, withPermissions } from "./base";
 
 /** -- User Collections -- */
 // Input schema for forms (includes passwordConfirm for validation)
 export const UserInputSchema = z.object({
-  name: z.string().min(2, "Name must be longer").optional(),
+  name: z.string().optional(),
   email: z.string().email(),
   password: z.string().min(8, "Password must be at least 8 characters"),
   passwordConfirm: z.string(),
@@ -12,18 +12,21 @@ export const UserInputSchema = z.object({
 });
 
 // Database schema (excludes passwordConfirm, includes avatar as file field)
+// Matches PocketBase's default users auth collection structure
+// Note: PocketBase has min: 0, max: 255 for name, but our snapshot loader
+// doesn't extract field-level options properly yet (TODO: fix snapshot loader)
 const UserDatabaseSchema = z.object({
-  name: z.string().min(2, "Name must be longer").optional(),
+  name: z.string().optional(),
   email: z.string().email(),
   password: z.string().min(8, "Password must be at least 8 characters"),
   avatar: z.instanceof(File).optional(),
 });
 
 // Apply permissions and indexes for auth collection
-// Users can view all profiles, but only manage their own
+// Matches PocketBase's default users collection configuration
 export const UserSchema = withIndexes(
   withPermissions(UserDatabaseSchema.extend(baseSchema), {
-    // Users can list other users (for mentions, user search, etc.)
+    // Users can list their own profile
     listRule: "id = @request.auth.id",
     // Users can view their own profile
     viewRule: "id = @request.auth.id",
@@ -33,13 +36,11 @@ export const UserSchema = withIndexes(
     updateRule: "id = @request.auth.id",
     // Users can only delete their own account
     deleteRule: "id = @request.auth.id",
-    // Users can only manage their own account (change email, password, etc.)
-    manageRule: "id = @request.auth.id",
+    // manageRule is null in PocketBase default (not set)
   }),
   [
-    // Email should be unique for authentication
-    "CREATE UNIQUE INDEX idx_users_email ON users (email)",
-    // Index on name for user search and sorting
-    "CREATE INDEX idx_users_name ON users (name)",
+    // PocketBase's default indexes for auth collections
+    "CREATE UNIQUE INDEX `idx_tokenKey__pb_users_auth_` ON `users` (`tokenKey`)",
+    "CREATE UNIQUE INDEX `idx_email__pb_users_auth_` ON `users` (`email`) WHERE `email` != ''",
   ]
 );
