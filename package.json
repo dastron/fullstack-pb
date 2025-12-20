@@ -30,6 +30,7 @@
     "test:all": "yarn workspaces foreach --all run test",
     "outdated": "yarn workspaces foreach -pR run npm outdated",
     "focus": "yarn workspaces focus",
+    "rename": "node ./scripts/rename-project.js",
     "why": "yarn why"
   },
   "author": "dastron <erik.danford@gmail.com>",

@@ -11,6 +11,9 @@ Fullstack is a comprehensive full stack project template with React frontend, No
 git clone https://github.com/dastron/project.git
 cd project
 
+# Rename the project from template (interactive)
+yarn rename
+
 # Install dependencies
 yarn install
 
