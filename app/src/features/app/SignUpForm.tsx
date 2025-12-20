@@ -50,19 +50,14 @@ const UserForm = () => {
   return (
     <FormProvider {...formMethods}>
       <Stack as="form" onSubmit={handleSubmit(onSubmit)} gap="4" align="flex-start" maxW="sm" data-testid="signup-form">
-        {Object.keys(errors)
-          .filter((field) => !["name", "username", "email", "password", "passwordConfirm"].includes(field))
-          .map((field) => (
-            <div key={field} style={{ color: "red" }} data-testid="form-error">
-              {errors[field as keyof typeof errors]?.message}
-            </div>
-          ))}
+        {errors.root && (
+          <div style={{ color: "red" }} data-testid="form-error">
+            {errors.root.message}
+          </div>
+        )}
 
         <Field label="Name" invalid={!!errors.name} errorText={errors.name?.message}>
           <Input {...register("name")} data-testid="name-input" />
-        </Field>
-        <Field label="Username" invalid={!!errors.username} errorText={errors.username?.message}>
-          <Input {...register("username")} data-testid="username-input" />
         </Field>
         <Field label="Email" invalid={!!errors.email} errorText={errors.email?.message}>
           <Input {...register("email")} data-testid="email-input" />

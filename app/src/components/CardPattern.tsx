@@ -26,6 +26,18 @@ export const CardPattern = ({ data, columns, prefix }: { data: any[]; columns: s
       case "created":
       case "expired":
         return <DateRelativeText date={item[column]} />;
+      case "completed":
+        return (
+          <Text
+            noOfLines={1}
+            fontSize="md"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            color={item[column] ? "green.500" : "orange.500"}
+          >
+            {item[column] ? "Completed" : "Pending"}
+          </Text>
+        );
       default:
         return (
           <Text noOfLines={1} fontSize="md" overflow="hidden" textOverflow="ellipsis">

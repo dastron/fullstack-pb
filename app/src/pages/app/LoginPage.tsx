@@ -25,9 +25,7 @@ const LoginFormPage = () => {
                 <Text fontSize="xl" fontWeight="bold" color="brand.700" mb={2}>
                   Continue Building
                 </Text>
-                <Text color={textColor}>
-                  Sign in to access your Pocketbase projects and continue where you left off.
-                </Text>
+                <Text color={textColor}>Sign in to access your todos and continue where you left off.</Text>
               </Box>
 
               {/* Key Benefits */}

@@ -29,6 +29,6 @@ describe("App", () => {
   it("displays welcome text", async () => {
     const { getAllByText } = renderApp();
 
-    await expect(getAllByText(/Projects/i).length).toBeGreaterThan(0);
+    await expect(getAllByText(/Todos/i).length).toBeGreaterThan(0);
   });
 });

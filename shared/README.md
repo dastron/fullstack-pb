@@ -108,7 +108,7 @@ For complete documentation, see the [Migration Guide](./MIGRATION_GUIDE.md).
 Current schemas in this package:
 
 - `UserSchema` / `UserInputSchema` - User entity with auth
-- `ProjectSchema` / `ProjectInputSchema` - Project entity
+- `TodoSchema` / `TodoInputSchema` - Todo entity
 - `baseSchema` - Base fields for all entities
 
 ## Adding New Schemas

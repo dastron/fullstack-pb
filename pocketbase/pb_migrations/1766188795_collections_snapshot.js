@@ -731,7 +731,7 @@ migrate((app) => {
         "enabled": false,
         "rule": ""
       },
-      "name": "users",
+      "name": "Users",
       "oauth2": {
         "enabled": false,
         "mappedFields": {

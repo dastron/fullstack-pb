@@ -20,9 +20,9 @@ const DesktopAppMenu = () => {
             </HStack>
           </Link>
           <Menu>
-            <Link to="/project">
+            <Link to="/todo">
               <MenuButton height="100%" borderRadius={0} borderColor="gray.200" px={4}>
-                Projects
+                Todos
               </MenuButton>
             </Link>
           </Menu>

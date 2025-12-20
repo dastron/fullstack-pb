@@ -2,23 +2,23 @@ import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, HStack, Text } from "@chakra-ui/react";
 import { Outlet, Link as RouterLink, useParams } from "react-router-dom";
 
-function ProjectAppNav() {
-  const { projectId } = useParams();
+function TodoAppNav() {
+  const { todoId } = useParams();
 
   return (
     <>
       <Breadcrumb spacing={4} py={4}>
         <BreadcrumbItem>
-          <BreadcrumbLink as={RouterLink} to="/project">
+          <BreadcrumbLink as={RouterLink} to="/todo">
             <HStack spacing={1}>
               <ChevronLeftIcon />
-              <Text>Projects</Text>
+              <Text>Todos</Text>
             </HStack>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        {projectId && (
+        {todoId && (
           <BreadcrumbItem spacing={2}>
-            <BreadcrumbLink as={RouterLink} to={`/project/${projectId}`}>
+            <BreadcrumbLink as={RouterLink} to={`/todo/${todoId}`}>
               Details
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -29,4 +29,4 @@ function ProjectAppNav() {
   );
 }
 
-export default ProjectAppNav;
+export default TodoAppNav;

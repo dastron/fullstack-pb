@@ -26,7 +26,7 @@ describe("Moderation Utility Functions", () => {
   });
 
   it("should return moderate results", async () => {
-    const result = await moderateObject("1", "Projects", mockObject);
+    const result = await moderateObject("1", "Todos", mockObject);
 
     expect(result.flagged).toEqual(mockResponse.moderation.flagged);
     expect(result.category).toEqual({

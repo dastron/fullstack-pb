@@ -61,22 +61,22 @@ describe("SignUpForm", () => {
     // Fill out the Name field
     const nameInput = screen.getByTestId("name-input");
     fireEvent.change(nameInput, { target: { value: "John Doe" } });
-
-    // Fill out the Username field
-    const usernameInput = screen.getByTestId("username-input");
-    fireEvent.change(usernameInput, { target: { value: "johndoe" } });
+    fireEvent.blur(nameInput);
 
     // Fill out the Email field
     const emailInput = screen.getByTestId("email-input");
     fireEvent.change(emailInput, { target: { value: "john@example.com" } });
+    fireEvent.blur(emailInput);
 
     // Fill out the Password field
     const passwordInput = screen.getByTestId("password-input");
     fireEvent.change(passwordInput, { target: { value: "Password123!" } });
+    fireEvent.blur(passwordInput);
 
     // Fill out the Confirm Password field
     const confirmPasswordInput = screen.getByTestId("password-confirm-input");
     fireEvent.change(confirmPasswordInput, { target: { value: "Password123!" } });
+    fireEvent.blur(confirmPasswordInput);
 
     // Submit the form
     const submitButton = screen.getByTestId("signup-button");
@@ -86,7 +86,6 @@ describe("SignUpForm", () => {
     await vi.waitFor(() => {
       expect(mockSignUpNewUser).toHaveBeenCalledWith({
         name: "John Doe",
-        username: "johndoe",
         email: "john@example.com",
         password: "Password123!",
         passwordConfirm: "Password123!",
@@ -106,11 +105,18 @@ describe("SignUpForm", () => {
     render(<UserForm />);
 
     // Fill out required fields
-    fireEvent.change(screen.getByTestId("name-input"), { target: { value: "John Doe" } });
-    fireEvent.change(screen.getByTestId("username-input"), { target: { value: "johndoe" } });
-    fireEvent.change(screen.getByTestId("email-input"), { target: { value: "john@example.com" } });
-    fireEvent.change(screen.getByTestId("password-input"), { target: { value: "Password123!" } });
-    fireEvent.change(screen.getByTestId("password-confirm-input"), { target: { value: "Password123!" } });
+    const nameInput = screen.getByTestId("name-input");
+    fireEvent.change(nameInput, { target: { value: "John Doe" } });
+    fireEvent.blur(nameInput);
+    const emailInput = screen.getByTestId("email-input");
+    fireEvent.change(emailInput, { target: { value: "john@example.com" } });
+    fireEvent.blur(emailInput);
+    const passwordInput = screen.getByTestId("password-input");
+    fireEvent.change(passwordInput, { target: { value: "Password123!" } });
+    fireEvent.blur(passwordInput);
+    const confirmPasswordInput = screen.getByTestId("password-confirm-input");
+    fireEvent.change(confirmPasswordInput, { target: { value: "Password123!" } });
+    fireEvent.blur(confirmPasswordInput);
 
     // Submit the form
     fireEvent.click(screen.getByTestId("signup-button"));
@@ -135,11 +141,18 @@ describe("SignUpForm", () => {
     render(<UserForm />);
 
     // Fill out required fields
-    fireEvent.change(screen.getByTestId("name-input"), { target: { value: "John Doe" } });
-    fireEvent.change(screen.getByTestId("username-input"), { target: { value: "johndoe" } });
-    fireEvent.change(screen.getByTestId("email-input"), { target: { value: "john@example.com" } });
-    fireEvent.change(screen.getByTestId("password-input"), { target: { value: "Password123!" } });
-    fireEvent.change(screen.getByTestId("password-confirm-input"), { target: { value: "Password123!" } });
+    const nameInput = screen.getByTestId("name-input");
+    fireEvent.change(nameInput, { target: { value: "John Doe" } });
+    fireEvent.blur(nameInput);
+    const emailInput = screen.getByTestId("email-input");
+    fireEvent.change(emailInput, { target: { value: "john@example.com" } });
+    fireEvent.blur(emailInput);
+    const passwordInput = screen.getByTestId("password-input");
+    fireEvent.change(passwordInput, { target: { value: "Password123!" } });
+    fireEvent.blur(passwordInput);
+    const confirmPasswordInput = screen.getByTestId("password-confirm-input");
+    fireEvent.change(confirmPasswordInput, { target: { value: "Password123!" } });
+    fireEvent.blur(confirmPasswordInput);
 
     // Submit the form
     fireEvent.click(screen.getByTestId("signup-button"));
@@ -158,11 +171,18 @@ describe("SignUpForm", () => {
     render(<UserForm />);
 
     // Fill out required fields
-    fireEvent.change(screen.getByTestId("name-input"), { target: { value: "John Doe" } });
-    fireEvent.change(screen.getByTestId("username-input"), { target: { value: "johndoe" } });
-    fireEvent.change(screen.getByTestId("email-input"), { target: { value: "john@example.com" } });
-    fireEvent.change(screen.getByTestId("password-input"), { target: { value: "Password123!" } });
-    fireEvent.change(screen.getByTestId("password-confirm-input"), { target: { value: "Password123!" } });
+    const nameInput = screen.getByTestId("name-input");
+    fireEvent.change(nameInput, { target: { value: "John Doe" } });
+    fireEvent.blur(nameInput);
+    const emailInput = screen.getByTestId("email-input");
+    fireEvent.change(emailInput, { target: { value: "john@example.com" } });
+    fireEvent.blur(emailInput);
+    const passwordInput = screen.getByTestId("password-input");
+    fireEvent.change(passwordInput, { target: { value: "Password123!" } });
+    fireEvent.blur(passwordInput);
+    const confirmPasswordInput = screen.getByTestId("password-confirm-input");
+    fireEvent.change(confirmPasswordInput, { target: { value: "Password123!" } });
+    fireEvent.blur(confirmPasswordInput);
 
     // Submit the form
     fireEvent.click(screen.getByTestId("signup-button"));

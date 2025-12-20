@@ -12,7 +12,7 @@ export class UserMutator extends BaseMutator<UserType, UserInputType> {
   }
 
   protected getCollection() {
-    return this.pb.collection("Projects");
+    return this.pb.collection("Users");
   }
 
   protected async validateInput(input: UserInputType) {

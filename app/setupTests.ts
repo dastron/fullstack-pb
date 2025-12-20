@@ -1,6 +1,6 @@
 import type {
-  ProjectInputType,
-  ProjectType,
+  TodoInputType,
+  TodoType,
   UserInputType,
   UserType,
 } from "@project/shared/types";
@@ -15,9 +15,9 @@ interface CollectionConfig<I, T> {
 }
 
 export const collectionsConfig: Record<string, CollectionConfig<any, any>> = {
-  Projects: {
-    input: {} as ProjectInputType,
-    type: {} as ProjectType,
+  Todos: {
+    input: {} as TodoInputType,
+    type: {} as TodoType,
   },
   Users: {
     input: {} as UserInputType,

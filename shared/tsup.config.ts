@@ -4,7 +4,7 @@ export default defineConfig({
   entry: [
     'src/schema.ts',
     'src/schema/user.ts',
-    'src/schema/project.ts',
+    'src/schema/todo.ts',
     'src/enums.ts',
     'src/types.ts',
     'src/mutator.ts',

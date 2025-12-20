@@ -8,8 +8,8 @@ import ErrorPage from "./pages/app/ErrorPage.tsx";
 import SpinnerPage from "./pages/app/SpinnerPage.tsx";
 // load route modules
 import { AppRoutes } from "./pages/AppRoutes.tsx";
-import { ProjectRoutes } from "./pages/ProjectRoutes.tsx";
 import { SettingsRoutes } from "./pages/SettingsRoutes.tsx";
+import { TodoRoutes } from "./pages/TodoRoutes.tsx";
 // Consolidate router configuration
 const future = {
   v7_startTransition: true,
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     hydrateFallbackElement: <SpinnerPage />,
-    children: [AppRoutes, ProjectRoutes, SettingsRoutes],
+    children: [AppRoutes, TodoRoutes, SettingsRoutes],
   },
 ]);
 

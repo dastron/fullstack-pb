@@ -36,10 +36,10 @@
   "author": "dastron <erik.danford@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "^9.1.2",
-    "prettier": "^3.5.3",
-    "prettier-plugin-organize-imports": "^4.1.0",
-    "typescript": "^5.8.3"
+    "concurrently": "^9.2.1",
+    "prettier": "^3.7.4",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "typescript": "^5.9.3"
   },
   "packageManager": "yarn@4.8.1"
 }

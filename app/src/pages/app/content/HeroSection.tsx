@@ -18,7 +18,7 @@ const HeroSection: React.FC = () => {
           </Heading>
           <Text fontSize="xl" color={textColor} maxW="800px">
             A complete fullstack solution with Pocketbase backend, React frontend, and everything you need to launch
-            your next project.
+            your next todo app.
           </Text>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4} width="100%" maxW="800px">
             <Button
@@ -30,8 +30,8 @@ const HeroSection: React.FC = () => {
             >
               View Source Code
             </Button>
-            <Button as={Link} to="/project" colorScheme="primary" size="lg">
-              Demo Project
+            <Button as={Link} to="/todo" colorScheme="primary" size="lg">
+              Demo Todo App
             </Button>
             <Button as={Link} to="https://pocketbase.io/docs/" target="_blank" colorScheme="primary" size="lg">
               Pocketbase Docs

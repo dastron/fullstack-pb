@@ -33,10 +33,10 @@ const MobileAppMenu = () => {
         <Menu>
           <MenuButton as={IconButton} aria-label="Menu" icon={<Icon />} variant="ghost" />
           <MenuList maxH="calc(100vh - 100px)" overflowY="auto">
-            <MenuGroup title="Projects">
-              <MenuItem onClick={() => navigate("/project")}>
+            <MenuGroup title="Todos">
+              <MenuItem onClick={() => navigate("/todo")}>
                 <Icon mr={2} />
-                Projects
+                Todos
               </MenuItem>
             </MenuGroup>
             <MenuGroup title="Account">
